@@ -13,6 +13,10 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'timeline/css/black-dashboard.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'timeline/css/nucleo-icons.css' %}">
+    
+    
+    {% block styles %} {% endblock %}
+    
   </head>
   <body>
     <div class="wrapper">
@@ -31,22 +35,28 @@
         		</div>
         		
         		<ul class="nav">
-          			<li class="active ">
-           				<a href="./dashboard.html">
-              				<i class="tim-icons icon-chart-pie-36"></i>
+          			<li class="{% block dashboard_active %} {% endblock %}">
+           				<a href="./dashboard">
+              				<i class="tim-icons icon-bullet-list-67"></i>
               				<p>Dashboard</p>
             			</a>
           			</li>
-          			<li>
-            			<a href="./icons.html">
-              				<i class="tim-icons icon-atom"></i>
+          			<li class="{% block releases_active %} {% endblock %}">
+            			<a href="./releases">
+              				<i class="tim-icons icon-spaceship"></i>
               				<p>Releases</p>
             			</a>
           			</li>
-          			<li>
-            			<a href="./icons.html">
-              				<i class="tim-icons icon-atom"></i>
+          			<li class="{% block ratings_active %} {% endblock %}">
+            			<a href="./ratings">
+              				<i class="tim-icons icon-chart-bar-32"></i>
               				<p>Ratings</p>
+            			</a>
+          			</li>
+          			<li>
+            			<a href="/admin" target="_BLANK">
+              				<i class="tim-icons icon-settings"></i>
+              				<p>Admin</p>
             			</a>
           			</li>
         		</ul>
@@ -67,7 +77,7 @@
                 				<span class="navbar-toggler-bar bar3"></span>
               				</button>
             			</div>
-            			<a class="navbar-brand" href="javascript:void(0)">Dashboard</a>
+            			<a class="navbar-brand" href="javascript:void(0)">{% block title %}{{ title }}{% endblock %}</a>
           			</div>
          			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
             			<span class="navbar-toggler-bar navbar-kebab"></span>
@@ -89,40 +99,14 @@
       		
       		<div class="content">
       		
-      			<div class="row">
-      		
-      				<div class="col-md-6">
-      				
-      					<div class="card">
-      						<div class="card-header">
-                				<h4 class="card-title">Useful links</h4>
-              				</div>
-              				
-              				<div class="card-body">
-              					
-              					<div class="alert alert-info alert-with-icon" data-notify="container">
-                  					<!--<button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
-                    					<i class="tim-icons icon-simple-remove"></i>
-                  					</button>-->
-                  					<span data-notify="icon" class="tim-icons icon-bell-55"></span>
-                  					<span data-notify="message">Jazz: Android Backlog</span>
-                				</div>
-              					
-              				</div>
-      					</div>
-      				</div>
-      			</div>
+      			{% block content %}
+      			dummy
+      			{% endblock %}
+      			
       		</div>
     	
     	</div>
     </div>
-    
-    
-    <ul>
-    {% for app in app_list %}
-      <li>{{ app }}</li>
-    {% endfor %}
-    </ul>
     
     <script src="{% static 'timeline/js/jquery.min.js' %}"></script>
   	<script src="{% static 'timeline/js/popper.min.js' %}"></script>

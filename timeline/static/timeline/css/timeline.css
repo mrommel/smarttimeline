@@ -1,0 +1,199 @@
+
+section.main {
+	width: 80%;
+	margin: 0px auto;
+	/*background-image: url("background.png");
+	background-repeat: repeat-y;
+	background-position: 50% 100px;*/
+}
+
+section.title {
+	width: 80%;
+	margin: 20px auto;
+}
+
+section.title h1 {
+	position: relative;
+	font-size: 24px;
+	font-weight: 900;
+	text-align: center;
+	color: rgba(255, 255, 255, 0.8);
+}
+
+section.title img.title_icon {
+	width: 32px;
+	height: 32px;
+	vertical-align: middle;
+}
+
+section.rocket {
+	width: 80%;
+	margin: auto;
+	text-align: center;
+}
+
+section.rocket img.rocket_icon {
+	width: 200px;
+	height: 200px;
+	vertical-align: middle;
+}
+
+/*section.month:before {
+	content: '';
+	display: block;
+	clear: both;
+	margin: 60px auto;
+}*/
+
+section.month {
+	width: 80%;
+	margin: 20px auto;
+	position: relative;
+	font-size: 18px;
+	font-weight: 900;
+	text-align: center;
+	color: rgba(255, 255, 255, 0.8);
+	clear: both;
+	padding-top: 30px;
+}
+section.month:before,
+section.month:after {
+    content: '';
+    display: inline-block;
+    clear: both;
+    
+    border-top: 2px solid rgba(255, 255, 255, 0.8);
+    width: 6rem;
+    margin: 0 1rem;
+    padding-bottom: 5px;
+}
+
+section.timeline {
+	width: 80%;
+	margin: 20px auto;
+	position: relative;
+}
+
+section.timeline:before {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: 0;
+	margin: 0 0 0 -1px;
+	width: 2px;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.8);
+}
+
+section.timeline article {
+	width: 100%;
+	margin: 0 0 -30px 0;
+	position: relative;
+}
+
+section.timeline article:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+
+section.timeline article div.inner {
+	width: 40%;
+	float: left;
+	margin: 5px 0 0 0;
+	border-radius: 6px;
+}
+
+section.timeline article div.inner span.date {
+	display: block;
+	width: 50px;
+	height: 40px;
+	padding: 5px 0;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin: 0 0 0 -27px;
+	border-radius: 100%;
+	font-size: 12px;
+	background: #25303B;
+	color: rgba(255, 255, 255, 0.8);
+	border: 2px solid rgba(255, 255, 255, 0.8);
+	box-shadow: 0 0 0 7px #25303B;
+}
+
+section.timeline article div.inner span.date span {
+	display: block;
+	text-align: center;
+}
+
+section.timeline article div.inner span.date span.day {
+	padding: 5px 0;
+	font-size: 18px;
+}
+
+section.timeline article div.inner h2 {
+	padding: 10px;
+	margin: 0;
+	color: #fff;
+	font-size: 16px;
+	vertical-align: middle;
+	letter-spacing: 0px;
+	border-radius: 6px 6px 0 0;
+	position: relative;
+	font-weight: normal;
+}
+
+section.timeline article div.inner h2 img.app_icon {
+	width: 18px;
+	height: 18px;
+	vertical-align: middle;
+}
+
+section.timeline article img.release_icon {
+	width: 128px;
+	height: 128px;
+}
+
+section.timeline article div.inner h2:after {
+	content: '';
+	position: absolute;
+	top: 20px;
+	right: -5px;
+	width: 10px;
+	height: 10px;
+	-webkit-transform: rotate(-45deg);
+}
+
+section.timeline article div.inner p {
+	padding: 15px;
+	margin: 0;
+	font-size: 14px;
+	background: #fff;
+	color: #656565;
+	border-radius: 0 0 6px 6px;
+}
+
+section.timeline article:nth-child(2n+2) div.inner {
+	float: right;
+}
+
+section.timeline article:nth-child(2n+2) div.inner h2:after {
+	left: -5px;
+}
+
+section.timeline div.inner h2.android {
+	background: #61D836;
+}
+
+section.timeline div.inner h2.android:after {
+	background: #61D836;
+}
+
+section.timeline div.inner h2.ios {
+	background: #007B76;
+}
+
+section.timeline div.inner h2.ios:after {
+	background: #007B76;
+}
