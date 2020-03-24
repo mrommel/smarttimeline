@@ -13,6 +13,12 @@ class App(models.Model):
     name = models.CharField(max_length=200)
     mobile_os = models.CharField(max_length=3, choices=MobileOS.choices, default=MobileOS.ANDROID, )
 
+    def current_version(self):
+        return Version.objects.filter(app=self).latest('pub_date')
+
+    def current_rating(self):
+        return Rating.objects.filter(app=self).latest('pub_date')
+
     # ...
     def __str__(self):
         return self.name

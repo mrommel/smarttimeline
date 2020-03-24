@@ -3,9 +3,7 @@ from django.template import loader
 
 from .models import App
 
-"""
-	Dashboard
-"""
+
 def index(request):
     app_list = App.objects.all
     template = loader.get_template('timeline/dashboard.html')

@@ -22,5 +22,237 @@
       					</div>
       				</div>
       			</div>
+      			
+      			<div class="row">
+      			
+      				<div class="col-lg-6 col-md-12">
+						<div class="card ">
+						  <div class="card-header">
+							<h4 class="card-title"> Bewertungen</h4>
+						  </div>
+						  <div class="card-body">
+							<div class="table-responsive">
+							  <table class="table tablesorter " id="">
+								<thead class=" text-primary">
+								  <tr>
+									<th>
+									  App
+									</th>
+									<th>
+									  Current Version
+									</th>
+									<th>
+									  Current Rating
+									</th>
+									<th class="text-center">
+									  Last Month (delta)
+									</th>
+								  </tr>
+								</thead>
+								<tbody>
 
+									{% for app in app_list %}
+								  <tr>
+									<td>{{ app.name }}</td>
+									<td>{{ app.current_version.name }}</td>
+									<td>{{ app.current_rating.rating }}</td>
+									<td class="text-center">-</td>
+								  </tr>
+									{% endfor %}
+								</tbody>
+							  </table>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					  
+					  <div class="col-lg-6 col-md-12">
+					  
+					  </div>
+					  
+					</div>
+
+{% endblock %}
+
+{% block scripts %}
+	{% load static %}
+	<script src="{% static 'timeline/js/Chart.min.js' %}"></script>
+	<!--<script src="{% static 'timeline/js/utils.js' %}"></script>-->
+	<script>
+
+	var ratingsLabels = ['2019-08-28', '2019-09-04', '2019-09-13', '2019-09-25', '2019-09-30', '2019-10-08', '2019-10-17', '2019-10-23',
+			'2019-11-01', '2019-11-08', '2019-11-12', '2019-11-17', '2019-11-19', '2019-11-21', '2019-11-25', '2019-11-28', '2019-12-02',
+			'2019-12-06', '2019-12-09', '2019-12-12', '2019-12-16', '2019-12-20', '2019-12-28', '2020-01-02', '2020-01-06', '2020-01-10',
+			'2020-01-17', '2020-01-20', '2020-01-24', '2020-01-27', '2020-02-05', '2020-02-07', '2020-02-10', '2020-02-14', '2020-02-17',
+			'2020-02-20', '2020-02-24', '2020-02-28', '2020-03-02', '2020-03-06', '2020-03-09', '2020-03-13', '2020-03-16'];
+
+	Chart.defaults.global.defaultFontColor = '#fff';
+	Chart.defaults.global.defaultFontFamily = 'Poppins,sans-serif';
+	var config = {
+		type: 'line',
+		data: {
+			labels: ratingsLabels,
+			datasets: []
+		},
+		options: {
+			responsive: true,
+			title: {
+				display: true,
+				text: 'Bewertungen FRITZ!Apps',
+				fontSize: 27
+			},
+			tooltips: {
+				mode: 'index',
+				intersect: false,
+			},
+			hover: {
+				mode: 'nearest',
+				intersect: true
+			},
+			scales: {
+				xAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Datum'
+					}
+				}],
+				yAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Sterne'
+					},
+					ticks: {
+						min: 1.0,
+						max: 5.0
+					}
+				}]
+			},
+			legend: {
+				display: true,
+				position: 'bottom',
+			},
+			markers: {
+				display: true,
+				fontColor: '#fff',
+				fontSize: 12,
+				references: [
+					// MyFRITZ!App Android
+					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 5, reference: 'MyFRITZ!App\n2.13.4'},
+					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 8, reference: 'MyFRITZ!App\n2.13.5'},
+					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 15, reference: 'MyFRITZ!App\n2.13.6'},
+					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 25, reference: 'MyFRITZ!App\n2.13.7'},
+					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 29, reference: 'MyFRITZ!App\n2.13.8'},
+					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 37, reference: 'MyFRITZ!App\n2.13.9'},
+					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 40, reference: 'MyFRITZ!App\n2.13.10'},
+
+					// FRITZ!App Fon Android
+					{ datasetLabel: 'FRITZ!App Fon Android', dataIndex: 4, reference: 'FRITZ!App Fon\n1.90.7'},
+					//{ datasetLabel: 'FRITZ!App Fon Android', dataIndex: 7, reference: 'FRITZ!App Fon\n1.90.8'},
+					{ datasetLabel: 'FRITZ!App Fon Android', dataIndex: 7, reference: 'FRITZ!App Fon\n1.90.9'},
+					{ datasetLabel: 'FRITZ!App Fon Android', dataIndex: 37, reference: 'FRITZ!App Fon\n1.90.10'},
+
+					// FRITZ!App WLAN Android
+					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 1, reference: 'FRITZ!App WLAN\n2.8.10'},
+					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 5, reference: 'FRITZ!App WLAN\n2.8.11'},
+					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 7, reference: 'FRITZ!App WLAN\n2.8.12'},
+					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 12, reference: 'FRITZ!App WLAN\n2.8.13'},
+					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 23, reference: 'FRITZ!App WLAN\n2.8.14'},
+					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 37, reference: 'FRITZ!App WLAN\n2.8.15'},
+					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 39, reference: 'FRITZ!App WLAN\n2.8.16'},
+
+					// FRITZ!App TV Android
+					{ datasetLabel: 'FRITZ!App TV Android', dataIndex: 13, reference: 'FRITZ!App TV\n1.5.10'},
+					{ datasetLabel: 'FRITZ!App TV Android', dataIndex: 27, reference: 'FRITZ!App TV\n1.5.11'},
+
+					// MyFRITZ!App iOS
+					{ datasetLabel: 'MyFRITZ!App iOS', dataIndex: 5, reference: 'MyFRITZ!App\n2.0.5'},
+					{ datasetLabel: 'MyFRITZ!App iOS', dataIndex: 9, reference: 'MyFRITZ!App\n2.0.6'},
+					{ datasetLabel: 'MyFRITZ!App iOS', dataIndex: 11, reference: 'MyFRITZ!App\n2.0.7'},
+					{ datasetLabel: 'MyFRITZ!App iOS', dataIndex: 28, reference: 'MyFRITZ!App\n2.0.8'},
+
+					// FRITZ!App Fon iOS
+					{ datasetLabel: 'FRITZ!App Fon iOS', dataIndex: 6, reference: 'FRITZ!App Fon\n4.1.4'},
+					{ datasetLabel: 'FRITZ!App Fon iOS', dataIndex: 7, reference: 'FRITZ!App Fon\n4.1.5'},
+
+					// FRITZ!App WLAN iOS
+					{ datasetLabel: 'FRITZ!App WLAN iOS', dataIndex: 8, reference: 'FRITZ!App Fon\n1.4.1'},
+
+					// FRITZ!App TV iOS
+					{ datasetLabel: 'FRITZ!App TV iOS', dataIndex: 3, reference: 'FRITZ!App TV\n1.7.4'},
+					{ datasetLabel: 'FRITZ!App TV iOS', dataIndex: 4, reference: 'FRITZ!App TV\n1.7.5'},
+					{ datasetLabel: 'FRITZ!App TV iOS', dataIndex: 11, reference: 'FRITZ!App TV\n1.7.6'},
+				]
+			}
+		}
+	};
+
+	Chart.plugins.register({
+		afterDraw: function(chartInstance) {
+			if (chartInstance.config.options.markers || chartInstance.config.options.markers.display) {
+				var references = chartInstance.config.options.markers.references || [];
+				var helpers = Chart.helpers;
+				var ctx = chartInstance.chart.ctx;
+				var fontColor = helpers.getValueOrDefault(chartInstance.config.options.markers.fontColor, chartInstance.config.options.defaultFontColor);
+				var fontSize = helpers.getValueOrDefault(chartInstance.config.options.markers.fontSize, Chart.defaults.global.defaultFontSize + 5);
+
+				// render the value of the chart above the bar
+				ctx.font = Chart.helpers.fontString(fontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'bottom';
+				ctx.fillStyle = fontColor;
+
+				chartInstance.data.datasets.forEach(function (dataset, dsindex) {
+
+					var meta = chartInstance.getDatasetMeta(dsindex);
+					if (meta.hidden) {
+						return
+					}
+					//console.log('hidden: ' + meta.hidden)
+
+					for (var i = 0; i < dataset.data.length; i++) {
+						// note, many browsers don't support the array.find() function.
+						// if you use this then be sure to provide a pollyfill
+						var refPoint = references.find(function(e) {
+							return e.datasetLabel == dataset.label && e.dataIndex === i
+						});
+
+						if (refPoint) {
+							var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+							var yVal = model.y;
+
+							// value check
+							if (isNaN(yVal)) {
+								var beforeModel = dataset._meta[Object.keys(dataset._meta)[0]].data[i-1]._model;
+								var afterModel = dataset._meta[Object.keys(dataset._meta)[0]].data[i+2]._model;
+								yVal = (beforeModel.y + afterModel.y ) / 2.0
+							}
+
+							// background
+							ctx.fillStyle = 'rgba(255,255,255,0.8)';
+							ctx.strokeStyle = '#666';
+							ctx.lineJoin = "round";
+							ctx.lineWidth = 1;
+
+							roundRect(ctx, model.x - 100/2, yVal + 7, 100, 50, 20, true);
+
+							var lines = refPoint.reference.split('\n');
+							var lineheight = 18;
+							ctx.fillStyle = fontColor;
+							for (var j = 0; j<lines.length; j++) {
+								ctx.fillText(lines[j], model.x, yVal + 30 + (j*lineheight) );
+							}
+						}
+					}
+				});
+			}
+		}
+	});
+
+	window.onload = function() {
+		var ctx = document.getElementById('canvas').getContext('2d');
+		window.myLine = new Chart(ctx, config);
+	};
+	</script>
 {% endblock %}
