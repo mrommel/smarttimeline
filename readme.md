@@ -26,6 +26,13 @@ deactivate
 
 ###### create new app
 
-python manage.py startapp timeline
+python3 manage.py startapp timeline
 
 ## migrations
+
+python3 manage.py makemigrations timeline
+python3 manage.py migrate
+
+## Links
+
+https://demos.creative-tim.com/black-dashboard/examples/notifications.html

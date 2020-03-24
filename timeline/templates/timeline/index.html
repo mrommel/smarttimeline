@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <title>My test page</title>
+    
+    <!--     Fonts and icons     -->
+  	<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+  	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'timeline/css/black-dashboard.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'timeline/css/nucleo-icons.css' %}">
+  </head>
+  <body>
+    <div class="wrapper">
+    
+    	<!-- side bar -->
+    	<div class="sidebar">
+    	
+    		<div class="sidebar-wrapper">
+        		<div class="logo">
+          			<a href="javascript:void(0)" class="simple-text logo-mini">
+            			MiRo
+          			</a>
+          			<a href="javascript:void(0)" class="simple-text logo-normal">
+            			Dashboard
+          			</a>
+        		</div>
+        		
+        		<ul class="nav">
+          			<li class="active ">
+           				<a href="./dashboard.html">
+              				<i class="tim-icons icon-chart-pie-36"></i>
+              				<p>Dashboard</p>
+            			</a>
+          			</li>
+          			<li>
+            			<a href="./icons.html">
+              				<i class="tim-icons icon-atom"></i>
+              				<p>Releases</p>
+            			</a>
+          			</li>
+          			<li>
+            			<a href="./icons.html">
+              				<i class="tim-icons icon-atom"></i>
+              				<p>Ratings</p>
+            			</a>
+          			</li>
+        		</ul>
+     		</div>
+    	
+    	
+    	</div>	
+    
+    	<div class="main-panel">
+    	
+    		<nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+        		<div class="container-fluid">
+          			<div class="navbar-wrapper">
+            			<div class="navbar-toggle d-inline">
+              				<button type="button" class="navbar-toggler">
+                				<span class="navbar-toggler-bar bar1"></span>
+                				<span class="navbar-toggler-bar bar2"></span>
+                				<span class="navbar-toggler-bar bar3"></span>
+              				</button>
+            			</div>
+            			<a class="navbar-brand" href="javascript:void(0)">Dashboard</a>
+          			</div>
+         			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
+            			<span class="navbar-toggler-bar navbar-kebab"></span>
+            			<span class="navbar-toggler-bar navbar-kebab"></span>
+            			<span class="navbar-toggler-bar navbar-kebab"></span>
+          			</button>
+          			<div class="collapse navbar-collapse" id="navigation">
+            			<ul class="navbar-nav ml-auto">
+              				<li class="search-bar input-group">
+                				<button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal"><i class="tim-icons icon-zoom-split"></i>
+                  					<span class="d-lg-none d-md-block">Search</span>
+                				</button>
+              				</li>
+             				<li class="separator d-lg-none"></li>
+            			</ul>
+          			</div>
+        		</div>
+      		</nav>
+      		
+      		<div class="content">
+      		
+      			<div class="row">
+      		
+      				<div class="col-md-6">
+      				
+      					<div class="card">
+      						<div class="card-header">
+                				<h4 class="card-title">Useful links</h4>
+              				</div>
+              				
+              				<div class="card-body">
+              					
+              					<div class="alert alert-info alert-with-icon" data-notify="container">
+                  					<!--<button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+                    					<i class="tim-icons icon-simple-remove"></i>
+                  					</button>-->
+                  					<span data-notify="icon" class="tim-icons icon-bell-55"></span>
+                  					<span data-notify="message">Jazz: Android Backlog</span>
+                				</div>
+              					
+              				</div>
+      					</div>
+      				</div>
+      			</div>
+      		</div>
+    	
+    	</div>
+    </div>
+    
+    
+    <ul>
+    {% for app in app_list %}
+      <li>{{ app }}</li>
+    {% endfor %}
+    </ul>
+    
+    <script src="{% static 'timeline/js/jquery.min.js' %}"></script>
+  	<script src="{% static 'timeline/js/popper.min.js' %}"></script>
+  	<script src="{% static 'timeline/js/bootstrap.min.js' %}"></script>
+  
+  	<script src="{% static 'timeline/js/black-dashboard.min.js' %}"></script>
+  </body>
+</html>

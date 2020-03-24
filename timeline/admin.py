@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import App, Version, Rating
 
-# Register your models here.
+admin.site.register(App)
+admin.site.register(Version)
+admin.site.register(Rating)
