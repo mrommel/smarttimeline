@@ -12,6 +12,8 @@ class MobileOS(models.TextChoices):
 class App(models.Model):
     name = models.CharField(max_length=200)
     mobile_os = models.CharField(max_length=3, choices=MobileOS.choices, default=MobileOS.ANDROID, )
+    color = models.CharField(max_length=7, default='#000000')
+    solid = models.BooleanField(default=True)
 
     def current_version(self):
         return Version.objects.filter(app=self).latest('pub_date')

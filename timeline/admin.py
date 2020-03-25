@@ -1,23 +1,15 @@
 from django.contrib import admin
-from django import forms
 
 from .models import App, Version, Rating
+from .form import VersionModelForm
 
 
-class RatingInline(admin.StackedInline):
+class RatingInline(admin.TabularInline):
     model = Rating
     extra = 1
 
 
-class VersionModelForm(forms.ModelForm):
-    changelog = forms.CharField(widget=forms.Textarea)
-
-    class Meta:
-        model = Version
-        fields = ['name', 'changelog', 'pub_date', ]
-
-
-class VersionInline(admin.StackedInline):
+class VersionInline(admin.TabularInline):
     form = VersionModelForm
     model = Version
     extra = 1
@@ -25,8 +17,9 @@ class VersionInline(admin.StackedInline):
 
 class AppAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['name']}),
+        (None, {'fields': ['name']}),
         ('Mobile OS', {'fields': ['mobile_os'], 'classes': ['collapse']}),
+        ('Style', {'fields': ['color', 'solid'], 'classes': ['collapse']}),
     ]
     inlines = [RatingInline, VersionInline, ]
 

@@ -5,6 +5,13 @@
 {% block styles %} 
 	{% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'timeline/css/timeline.css' %}">
+<style type="text/css">
+.card-body img.app_icon {
+	width: 18px;
+	height: 18px;
+	vertical-align: middle;
+}
+</style>
 {% endblock %}
 
 {% block title %}Releases{% endblock %}
@@ -45,7 +52,7 @@
 												<span class="day">{{ release.pub_date|date:"d" }}<!--<sup>th</sup>--></span>
 		  									</span>
 		  									<h2 class="{{ release.app.mobile_os|lower }}"><img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;{{ release.app.name }} {{ release.name }}</h2>
-		  									<p>{{ release.changelog }}</p>
+		  									<p>{{ release.changelog|linebreaksbr }}</p>
 										</div>
 	  								</article>
 	  							{% endfor %}
@@ -67,6 +74,31 @@
               				</div>
 
               				<div class="card-body">
+
+								<div class="table-responsive">
+							  <table class="table tablesorter " id="">
+								<thead class=" text-primary">
+								  <tr>
+									<th>App</th>
+									<th>Version</th>
+									<th>Changelog</th>
+									<th>Last Month (delta)</th>
+								  </tr>
+								</thead>
+								<tbody>
+
+									{% for release in release_list %}
+								  <tr>
+									<td><img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;&nbsp;{{ release.app.name }}</td>
+									<td>{{ release.name }}</td>
+									<td>{{ release.changelog|linebreaks }}</td>
+									<td>{{ release.pub_date }}</td>
+								  </tr>
+									{% endfor %}
+								</tbody>
+							  </table>
+							</div>
+
 							</div>
       					</div>
       				</div>

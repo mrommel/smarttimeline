@@ -90,11 +90,22 @@
 	<!--<script src="{% static 'timeline/js/utils.js' %}"></script>-->
 	<script>
 
-	var ratingsLabels = ['2019-08-28', '2019-09-04', '2019-09-13', '2019-09-25', '2019-09-30', '2019-10-08', '2019-10-17', '2019-10-23',
-			'2019-11-01', '2019-11-08', '2019-11-12', '2019-11-17', '2019-11-19', '2019-11-21', '2019-11-25', '2019-11-28', '2019-12-02',
-			'2019-12-06', '2019-12-09', '2019-12-12', '2019-12-16', '2019-12-20', '2019-12-28', '2020-01-02', '2020-01-06', '2020-01-10',
-			'2020-01-17', '2020-01-20', '2020-01-24', '2020-01-27', '2020-02-05', '2020-02-07', '2020-02-10', '2020-02-14', '2020-02-17',
-			'2020-02-20', '2020-02-24', '2020-02-28', '2020-03-02', '2020-03-06', '2020-03-09', '2020-03-13', '2020-03-16'];
+	var ratingsLabels = [{% for timeline_item in chart_data.timeline %}'{{ timeline_item }}', {% endfor %}];
+
+	var datasets = [];
+
+	{% for dataset in chart_data.datasets %}
+		var dataset{{ forloop.counter0 }} =  {
+			label: '{{ dataset.name }}',
+			color: '{{ dataset.color }}',
+			{% if dataset.solid %}
+			{% else %}
+			borderDash: [5, 5],
+			{% endif %}
+			data: [ {% for item in dataset.data %} {{ item }}, {% endfor %}]
+		};
+		datasets.push(dataset{{ forloop.counter0 }});
+	{% endfor %}
 
 	Chart.defaults.global.defaultFontColor = '#fff';
 	Chart.defaults.global.defaultFontFamily = 'Poppins,sans-serif';
@@ -108,7 +119,7 @@
 			responsive: true,
 			title: {
 				display: true,
-				text: 'Bewertungen FRITZ!Apps',
+				text: 'Bewertungen der FRITZ!Apps',
 				fontSize: 27
 			},
 			tooltips: {
@@ -125,13 +136,20 @@
 					scaleLabel: {
 						display: true,
 						labelString: 'Datum'
-					}
+					},
+					gridLines: {
+						display: false,
+						color: '#eeeeee55'
+					},
 				}],
 				yAxes: [{
 					display: true,
 					scaleLabel: {
 						display: true,
 						labelString: 'Sterne'
+					},
+					gridLines: {
+						color: '#eeeeee55'
 					},
 					ticks: {
 						min: 1.0,
@@ -148,7 +166,7 @@
 				fontColor: '#fff',
 				fontSize: 12,
 				references: [
-					// MyFRITZ!App Android
+					/*// MyFRITZ!App Android
 					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 5, reference: 'MyFRITZ!App\n2.13.4'},
 					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 8, reference: 'MyFRITZ!App\n2.13.5'},
 					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 15, reference: 'MyFRITZ!App\n2.13.6'},
@@ -192,7 +210,7 @@
 					// FRITZ!App TV iOS
 					{ datasetLabel: 'FRITZ!App TV iOS', dataIndex: 3, reference: 'FRITZ!App TV\n1.7.4'},
 					{ datasetLabel: 'FRITZ!App TV iOS', dataIndex: 4, reference: 'FRITZ!App TV\n1.7.5'},
-					{ datasetLabel: 'FRITZ!App TV iOS', dataIndex: 11, reference: 'FRITZ!App TV\n1.7.6'},
+					{ datasetLabel: 'FRITZ!App TV iOS', dataIndex: 11, reference: 'FRITZ!App TV\n1.7.6'},*/
 				]
 			}
 		}
@@ -259,6 +277,23 @@
 			}
 		}
 	});
+
+	function addDataset(dataset) {
+
+		var newDataset = {
+			label: dataset.label,
+			backgroundColor: dataset.color,
+			borderColor: dataset.color,
+			data: dataset.data,
+			borderDash: dataset.borderDash,
+			fill: false
+		};
+		config.data.datasets.push(newDataset);
+	}
+
+	for (var i = 0; i < datasets.length; i++) {
+		addDataset(datasets[i]);
+	}
 
 	window.onload = function() {
 		var ctx = document.getElementById('canvas').getContext('2d');
