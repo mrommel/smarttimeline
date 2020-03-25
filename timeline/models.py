@@ -27,7 +27,7 @@ class App(models.Model):
 class Version(models.Model):
     name = models.CharField(max_length=200)
     app = models.ForeignKey(App, on_delete=models.CASCADE)
-    changelog = models.CharField(max_length=200)
+    changelog = models.CharField(max_length=512)
     pub_date = models.DateField('date published')
 
     # ...

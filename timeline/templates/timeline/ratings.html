@@ -4,6 +4,16 @@
 
 {% block ratings_active %}active {% endblock %}
 
+{% block styles %}
+<style type="text/css">
+.card-body img.app_icon {
+	width: 18px;
+	height: 18px;
+	vertical-align: middle;
+}
+</style>
+{% endblock %}
+
 {% block content %}
       			<div class="row">
       		
@@ -25,7 +35,7 @@
       			
       			<div class="row">
       			
-      				<div class="col-lg-6 col-md-12">
+      				<div class="col-md-12">
 						<div class="card ">
 						  <div class="card-header">
 							<h4 class="card-title"> Bewertungen</h4>
@@ -53,7 +63,7 @@
 
 									{% for app in app_list %}
 								  <tr>
-									<td>{{ app.name }}</td>
+									<td><img src="/static/timeline/img/apps/{{ app.name }}.png" class="app_icon" />&nbsp;&nbsp;{{ app.name }}</td>
 									<td>{{ app.current_version.name }}</td>
 									<td>{{ app.current_rating.rating }}</td>
 									<td class="text-center">-</td>

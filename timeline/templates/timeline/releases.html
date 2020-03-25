@@ -20,7 +20,7 @@
       				
       					<div class="card">
       						<div class="card-header">
-                				<h4 class="card-title">App Releases</h4>
+                				<h4 class="card-title">Timeline</h4>
               				</div>
               				
               				<div class="card-body">
@@ -28,75 +28,47 @@
               					<section class="rocket">
 									<img src="{% static 'timeline/img/rocket.png' %}" class="rocket_icon" />
 								</section>
-								
-								<section class="month">März 2020</section>
-	<section class="timeline">
-	
-	  <article>
-		<div class="inner">
-		  <span class="date">
-			<span class="day">09<sup>th</sup></span>
-		  </span>
-		  <h2 class="android"><img src="MyFRITZ!App Android.png" class="app_icon" />&nbsp;MyFRITZ!App Android 2.13.10</h2>
-		  <p>- Behoben: doppelte Einträge für einige Smart Home Geräte in den Nachrichten und in der Übersicht</p>
-		</div>
-	  </article>
-	
 
-	  <article>
-		<div class="inner">
-		  <span class="date">
-			<span class="day">4<sup>th</sup></span>
-		  </span>
-		  <h2 class="android"><img src="FRITZ!App WLAN Android.png" class="app_icon" />&nbsp;FRITZ!App WLAN Android 2.8.16</h2>
-		  <p>- Behoben: Absturz bei der Funktion "Neuen Repeater einrichten"</p>
-		</div>
-	  </article>
+								<section class="timeline">
 
-	</section>
+								{% for release in release_list %}
 
-	<section class="month">Februar 2020</section>
-	<section class="timeline">
+									{% if release.first %}
+									</section>
+									<section class="month">{{ release.pub_date|date:"M" }} {{ release.pub_date|date:"Y" }}</section>
+									<section class="timeline">
+									{% endif %}
 
-	  <article>
-		<div class="inner">
-		  <span class="date">
-			<span class="day">27<sup>th</sup></span>
-		  </span>
-		  <h2 class="android"><img src="FRITZ!App WLAN Android.png" class="app_icon" />&nbsp;FRITZ!App WLAN Android 2.8.15</h2>
-		  <p>- Behoben: Teilen des Messergebnisses bei sehr langen Messungen nicht möglich<br />
-			- Behoben: Anzeige des 5GHz Netzes auf einige Dual-Band-Telefonen fehlt</p>
-		</div>
-	  </article>
-  
-	  <article>
-		<div class="inner">
-		  <span class="date">
-			<span class="day">27<sup>th</sup></span>
-		  </span>
-		  <h2 class="android"><img src="FRITZ!App Fon Android.png" class="app_icon" />&nbsp;FRITZ!App Fon Android 1.90.10</h2>
-		  <p>- Verbesserung: verbesserte Art und Weise der Rufsignalisierung (Vollbild)</p>
-		</div>
-	  </article>
-  
-	  <article>
-		<div class="inner">
-		  <span class="date">
-			<span class="day">27<sup>th</sup></span>
-		  </span>
-		  <h2 class="android"><img src="MyFRITZ!App Android.png" class="app_icon" />&nbsp;MyFRITZ!App Android 2.13.9</h2>
-		  <p>- Verbesserung: Hinweis auf Datensparmodus<br />
-			- Behoben: Erste Aktion nach dem App Start schlägt fehl (betrifft Smart Home und Komfortfunktionen)<br />
-			- Behoben: Push Notifications werden vereinzelt nicht angezeigt<br />
-			- Behoben: Hinweis nach Update der FRITZ!Box wird nicht korrekt aktualisiert</p>
-		</div>
-	  </article>
-
-	</section>
+									<article>
+										<div class="inner">
+		  									<span class="date">
+												<span class="day">{{ release.pub_date|date:"d" }}<!--<sup>th</sup>--></span>
+		  									</span>
+		  									<h2 class="{{ release.app.mobile_os|lower }}"><img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;{{ release.app.name }} {{ release.name }}</h2>
+		  									<p>{{ release.changelog }}</p>
+										</div>
+	  								</article>
+	  							{% endfor %}
+	  							</section>
               					
               				</div>
       					</div>
       				</div>
       			</div>
 
+
+				<div class="row">
+
+      				<div class="col-md-12">
+
+      					<div class="card">
+      						<div class="card-header">
+                				<h4 class="card-title">Timeline</h4>
+              				</div>
+
+              				<div class="card-body">
+							</div>
+      					</div>
+      				</div>
+      			</div>
 {% endblock %}

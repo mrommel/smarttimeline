@@ -15,7 +15,7 @@ section.title {
 section.title h1 {
 	position: relative;
 	font-size: 24px;
-	font-weight: 900;
+	/*font-weight: 900;*/
 	text-align: center;
 	color: rgba(255, 255, 255, 0.8);
 }
@@ -50,7 +50,7 @@ section.month {
 	margin: 20px auto;
 	position: relative;
 	font-size: 18px;
-	font-weight: 900;
+	/*font-weight: 900;*/
 	text-align: center;
 	color: rgba(255, 255, 255, 0.8);
 	clear: both;
@@ -62,7 +62,7 @@ section.month:after {
     display: inline-block;
     clear: both;
     
-    border-top: 2px solid rgba(255, 255, 255, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.8);
     width: 6rem;
     margin: 0 1rem;
     padding-bottom: 5px;
@@ -81,7 +81,7 @@ section.timeline:before {
 	left: 50%;
 	top: 0;
 	margin: 0 0 0 -1px;
-	width: 2px;
+	width: 1px;
 	height: 100%;
 	background: rgba(255, 255, 255, 0.8);
 }
@@ -118,7 +118,7 @@ section.timeline article div.inner span.date {
 	font-size: 12px;
 	background: #25303B;
 	color: rgba(255, 255, 255, 0.8);
-	border: 2px solid rgba(255, 255, 255, 0.8);
+	border: 1px solid rgba(255, 255, 255, 0.8);
 	box-shadow: 0 0 0 7px #25303B;
 }
 
@@ -128,7 +128,7 @@ section.timeline article div.inner span.date span {
 }
 
 section.timeline article div.inner span.date span.day {
-	padding: 5px 0;
+	/*padding: 5px 0;*/
 	font-size: 18px;
 }
 
@@ -182,11 +182,11 @@ section.timeline article:nth-child(2n+2) div.inner h2:after {
 	left: -5px;
 }
 
-section.timeline div.inner h2.android {
+section.timeline div.inner h2.and {
 	background: #61D836;
 }
 
-section.timeline div.inner h2.android:after {
+section.timeline div.inner h2.and:after {
 	background: #61D836;
 }
 

@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
 
-from .models import App
+from .models import App, Version
 
 
 def index(request):
@@ -16,10 +16,22 @@ def index(request):
 
 def releases(request):
     app_list = App.objects.all
+    release_list = Version.objects.order_by('-pub_date')
+
+    last_month = 27
+    for release_item in release_list:
+        if release_item.pub_date.month != last_month:
+            release_item.first = True
+        else:
+            release_item.first = False
+
+        last_month = release_item.pub_date.month
+
     template = loader.get_template('timeline/releases.html')
     context = {
         'app_list': app_list,
-        'title': 'Releases'
+        'title': 'Releases',
+        'release_list': release_list
     }
     return HttpResponse(template.render(context, request))
 
