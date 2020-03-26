@@ -35,7 +35,7 @@ class App(models.Model):
         last_month = monthdelta(date.today(), -1)
         return next((x for x in all_ratings if x.pub_date > last_month), None)
 
-    def last_month_delta_rating(self):
+    def last_month_rating_delta(self):
 
         curr = self.current_rating()
         last = self.last_month_rating()

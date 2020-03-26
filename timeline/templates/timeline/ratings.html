@@ -65,7 +65,7 @@
 									<td><img src="/static/timeline/img/apps/{{ app.name }}.png" class="app_icon" />&nbsp;&nbsp;{{ app.name }}</td>
 									<td>{{ app.current_version.name }}</td>
 									<td>{{ app.current_rating.rating }}</td>
-									  <td>{{ app.last_month_rating.rating }} (<span class="{% if app.delta_rating < 0 %}negative{% elif app.delta_rating == 0.0 %}normal{% else %}positive{% endif %}">{{ app.delta_rating }}</span>)</td>
+									  <td>{{ app.last_month_rating.rating }} (<span class="{% if app.last_month_rating_delta < 0 %}negative{% elif app.last_month_rating_delta == 0.0 %}normal{% else %}positive{% endif %}">{{ app.last_month_rating_delta }}</span>)</td>
 								  </tr>
 									{% endfor %}
 								</tbody>
