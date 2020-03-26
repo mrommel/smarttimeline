@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from colorfield.fields import ColorField
+from datetime import date
 
 # Create your models here.
 
@@ -9,10 +10,18 @@ class MobileOS(models.TextChoices):
     IOS = 'iOS', _('iOS')
 
 
+def monthdelta(date, delta):
+    m, y = (date.month+delta) % 12, date.year + ((date.month)+delta-1) // 12
+    if not m: m = 12
+    d = min(date.day, [31,
+        29 if y%4==0 and not y%400==0 else 28,31,30,31,30,31,31,30,31,30,31][m-1])
+    return date.replace(day=d,month=m, year=y)
+
+
 class App(models.Model):
     name = models.CharField(max_length=200)
     mobile_os = models.CharField(max_length=3, choices=MobileOS.choices, default=MobileOS.ANDROID, )
-    color = models.CharField(max_length=7, default='#000000')
+    color = ColorField(default='#000000')
     solid = models.BooleanField(default=True)
 
     def current_version(self):
@@ -20,6 +29,21 @@ class App(models.Model):
 
     def current_rating(self):
         return Rating.objects.filter(app=self).latest('pub_date')
+
+    def last_month_rating(self):
+        all_ratings = Rating.objects.filter(app=self).order_by('pub_date')
+        last_month = monthdelta(date.today(), -1)
+        return next((x for x in all_ratings if x.pub_date > last_month), None)
+
+    def last_month_delta_rating(self):
+
+        curr = self.current_rating()
+        last = self.last_month_rating()
+
+        if curr is not None and last is not None:
+            return curr.rating - last.rating
+
+        return 0.0
 
     # ...
     def __str__(self):

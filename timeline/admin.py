@@ -7,6 +7,7 @@ from .form import VersionModelForm
 class RatingInline(admin.TabularInline):
     model = Rating
     extra = 1
+    fields = ('pub_date', 'rating')
 
 
 class VersionInline(admin.TabularInline):

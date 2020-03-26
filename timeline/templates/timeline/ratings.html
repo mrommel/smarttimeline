@@ -11,6 +11,15 @@
 	height: 18px;
 	vertical-align: middle;
 }
+.positive {
+	color: green;
+}
+.positive::before {
+	content:'+'
+}
+.negative {
+	color: red;
+}
 </style>
 {% endblock %}
 
@@ -25,9 +34,7 @@
               				</div>
               				
               				<div class="card-body">
-              					
               					<canvas id="canvas"></canvas>
-              					
               				</div>
       					</div>
       				</div>
@@ -45,18 +52,10 @@
 							  <table class="table tablesorter " id="">
 								<thead class=" text-primary">
 								  <tr>
-									<th>
-									  App
-									</th>
-									<th>
-									  Current Version
-									</th>
-									<th>
-									  Current Rating
-									</th>
-									<th class="text-center">
-									  Last Month (delta)
-									</th>
+									<th>App</th>
+									<th>Current Version</th>
+									<th>Current Rating</th>
+									<th>Last Month (Delta)</th>
 								  </tr>
 								</thead>
 								<tbody>
@@ -66,7 +65,7 @@
 									<td><img src="/static/timeline/img/apps/{{ app.name }}.png" class="app_icon" />&nbsp;&nbsp;{{ app.name }}</td>
 									<td>{{ app.current_version.name }}</td>
 									<td>{{ app.current_rating.rating }}</td>
-									<td class="text-center">-</td>
+									  <td>{{ app.last_month_rating.rating }} (<span class="{% if app.delta_rating < 0 %}negative{% elif app.delta_rating == 0.0 %}normal{% else %}positive{% endif %}">{{ app.delta_rating }}</span>)</td>
 								  </tr>
 									{% endfor %}
 								</tbody>
@@ -102,7 +101,7 @@
 			{% else %}
 			borderDash: [5, 5],
 			{% endif %}
-			data: [ {% for item in dataset.data %} {{ item }}, {% endfor %}]
+			data: [ {% for item in dataset.data %}{{ item|cut:"0.00" }}, {% endfor %}]
 		};
 		datasets.push(dataset{{ forloop.counter0 }});
 	{% endfor %}
@@ -117,10 +116,12 @@
 		},
 		options: {
 			responsive: true,
+			aspectRatio: 1.5,
 			title: {
 				display: true,
 				text: 'Bewertungen der FRITZ!Apps',
-				fontSize: 27
+				fontSize: 27,
+				fontStyle: 'normal'
 			},
 			tooltips: {
 				mode: 'index',

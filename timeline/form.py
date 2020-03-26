@@ -5,6 +5,7 @@ from .models import App, Version
 
 
 class AppForm(forms.ModelForm):
+
     class Meta:
         model = App
         fields = '__all__'
@@ -18,4 +19,4 @@ class VersionModelForm(forms.ModelForm):
 
     class Meta:
         model = Version
-        fields = ['name', 'changelog', 'pub_date', ]
+        fields = ['pub_date', 'name', 'changelog', ]
