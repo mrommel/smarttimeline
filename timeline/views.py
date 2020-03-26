@@ -1,11 +1,17 @@
 from django.http import HttpResponse
 from django.template import loader
-# import numpy as np
 
 from .models import App, Version, Rating
+from .utils import first, ChartData, ChartDataset, ChartMarker
 
 
 def index(request):
+    """
+    main page
+
+    :param request: request
+    :return: response
+    """
     app_list = App.objects.all
     template = loader.get_template('timeline/dashboard.html')
     context = {
@@ -16,6 +22,12 @@ def index(request):
 
 
 def releases(request):
+    """
+    releases page
+
+    :param request: request
+    :return: response
+    """
     app_list = App.objects.all
     release_list = Version.objects.order_by('-pub_date')
 
@@ -37,24 +49,13 @@ def releases(request):
     return HttpResponse(template.render(context, request))
 
 
-class ChartDataset:
-
-    def __init__(self, name, color, solid):
-        self.name = name
-        self.color = color
-        self.solid = solid
-        self.data = []
-
-
-class ChartData:
-    """A class that hold the chart data ready to be displayed"""
-
-    def __init__(self):
-        self.timeline = []
-        self.datasets = []
-
-
 def ratings(request):
+    """
+    ratings page
+
+    :param request: request
+    :return: response
+    """
     app_list = App.objects.all
     template = loader.get_template('timeline/ratings.html')
 
@@ -76,6 +77,13 @@ def ratings(request):
 
     # sort
     chart_data.timeline.sort()
+
+    for version in Version.objects.all():
+        timeline_item = first(chart_data.timeline, condition=lambda x: x >= version.pub_date)
+        timeline_index = chart_data.timeline.index(timeline_item)
+
+        marker_text = '%s#%s' % (version.app.name_without_os(), version.name)
+        chart_data.markers.append(ChartMarker(version.app.name, timeline_index, marker_text))
 
     context = {
         'app_list': app_list,

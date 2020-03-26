@@ -3,19 +3,12 @@ from django.utils.translation import gettext_lazy as _
 from colorfield.fields import ColorField
 from datetime import date
 
-# Create your models here.
+from timeline.utils import month_delta
+
 
 class MobileOS(models.TextChoices):
     ANDROID = 'And', _('Android')
     IOS = 'iOS', _('iOS')
-
-
-def monthdelta(date, delta):
-    m, y = (date.month+delta) % 12, date.year + ((date.month)+delta-1) // 12
-    if not m: m = 12
-    d = min(date.day, [31,
-        29 if y%4==0 and not y%400==0 else 28,31,30,31,30,31,31,30,31,30,31][m-1])
-    return date.replace(day=d,month=m, year=y)
 
 
 class App(models.Model):
@@ -23,6 +16,9 @@ class App(models.Model):
     mobile_os = models.CharField(max_length=3, choices=MobileOS.choices, default=MobileOS.ANDROID, )
     color = ColorField(default='#000000')
     solid = models.BooleanField(default=True)
+
+    def name_without_os(self):
+        return self.name.replace("Android", "").replace("iOS", "")
 
     def current_version(self):
         return Version.objects.filter(app=self).latest('pub_date')
@@ -32,7 +28,7 @@ class App(models.Model):
 
     def last_month_rating(self):
         all_ratings = Rating.objects.filter(app=self).order_by('pub_date')
-        last_month = monthdelta(date.today(), -1)
+        last_month = month_delta(date.today(), -1)
         return next((x for x in all_ratings if x.pub_date > last_month), None)
 
     def last_month_rating_delta(self):

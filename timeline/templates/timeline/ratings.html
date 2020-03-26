@@ -5,105 +5,119 @@
 {% block ratings_active %}active {% endblock %}
 
 {% block styles %}
-<style type="text/css">
-.card-body img.app_icon {
-	width: 18px;
-	height: 18px;
-	vertical-align: middle;
-}
-.positive {
-	color: green;
-}
-.positive::before {
-	content:'+'
-}
-.negative {
-	color: red;
-}
-</style>
+	{% load static %}
+	<script src="{% static 'timeline/js/roundrect.js' %}"></script>
+	<style type="text/css">
+		.card-body img.app_icon {
+			width: 18px;
+			height: 18px;
+			vertical-align: middle;
+		}
+		.card-ratings .card-header .dropdown {
+    		float: right;
+    		color: #ccc;
+		}
+		.card-ratings .card-header .title {
+    		margin-right: 20px;
+		}
+		.positive {
+			color: green;
+		}
+		.positive::before {
+			content:'+'
+		}
+		.negative {
+			color: red;
+		}
+	</style>
 {% endblock %}
 
 {% block content %}
-      			<div class="row">
-      		
-      				<div class="col-md-12">
-      				
-      					<div class="card">
-      						<div class="card-header">
-                				<h4 class="card-title">Ratings</h4>
-              				</div>
-              				
-              				<div class="card-body">
-              					<canvas id="canvas"></canvas>
-              				</div>
-      					</div>
-      				</div>
-      			</div>
-      			
-      			<div class="row">
-      			
-      				<div class="col-md-12">
-						<div class="card ">
-						  <div class="card-header">
-							<h4 class="card-title"> Bewertungen</h4>
-						  </div>
-						  <div class="card-body">
-							<div class="table-responsive">
-							  <table class="table tablesorter " id="">
-								<thead class=" text-primary">
-								  <tr>
+	<div class="row">
+
+		<div class="col-md-12">
+
+			<div class="card card-ratings">
+				<div class="card-header">
+					<h4 class="card-title title d-inline">Ratings</h4>
+					<div class="dropdown">
+                  		<button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown" aria-expanded="false">
+                   			 <i class="tim-icons icon-settings-gear-63"></i>
+                  		</button>
+                  		<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink" x-placement="bottom-end" style="position: absolute; transform: translate3d(-122px, 22px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    		<a class="dropdown-item" href="#" onclick="toggleMarkers();return false;">Toogle Markers</a>
+                  		</div>
+                	</div>
+				</div>
+
+				<div class="card-body">
+					<canvas id="canvas"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+
+		<div class="col-md-12">
+			<div class="card ">
+				<div class="card-header">
+					<h4 class="card-title"> Bewertungen</h4>
+				</div>
+
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table tablesorter " id="">
+							<thead class=" text-primary">
+								<tr>
 									<th>App</th>
 									<th>Current Version</th>
 									<th>Current Rating</th>
 									<th>Last Month (Delta)</th>
-								  </tr>
-								</thead>
-								<tbody>
+									<th>Last Month (Delta)</th>
+								</tr>
+							</thead>
+							<tbody>
 
-									{% for app in app_list %}
-								  <tr>
+							{% for app in app_list %}
+								<tr>
 									<td><img src="/static/timeline/img/apps/{{ app.name }}.png" class="app_icon" />&nbsp;&nbsp;{{ app.name }}</td>
 									<td>{{ app.current_version.name }}</td>
 									<td>{{ app.current_rating.rating }}</td>
-									  <td>{{ app.last_month_rating.rating }} (<span class="{% if app.last_month_rating_delta < 0 %}negative{% elif app.last_month_rating_delta == 0.0 %}normal{% else %}positive{% endif %}">{{ app.last_month_rating_delta }}</span>)</td>
-								  </tr>
-									{% endfor %}
-								</tbody>
-							  </table>
-							</div>
-						  </div>
-						</div>
-					  </div>
-					  
-					  <div class="col-lg-6 col-md-12">
-					  
-					  </div>
-					  
+									<td>{{ app.last_month_rating.rating }} (<span class="{% if app.last_month_rating_delta < 0 %}negative{% elif app.last_month_rating_delta == 0.0 %}normal{% else %}positive{% endif %}">{{ app.last_month_rating_delta }}</span>)</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
 					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-6 col-md-12">
+
+		</div>
+
+	</div>
 
 {% endblock %}
 
 {% block scripts %}
 	{% load static %}
 	<script src="{% static 'timeline/js/Chart.min.js' %}"></script>
-	<!--<script src="{% static 'timeline/js/utils.js' %}"></script>-->
-	<script>
+	<script src="{% static 'timeline/js/Chart.markers.js' %}"></script>
 
+	<script>
 	var ratingsLabels = [{% for timeline_item in chart_data.timeline %}'{{ timeline_item }}', {% endfor %}];
 
-	var datasets = [];
-
-	{% for dataset in chart_data.datasets %}
-		var dataset{{ forloop.counter0 }} =  {
-			label: '{{ dataset.name }}',
-			color: '{{ dataset.color }}',
-			{% if dataset.solid %}
-			{% else %}
-			borderDash: [5, 5],
-			{% endif %}
-			data: [ {% for item in dataset.data %}{{ item|cut:"0.00" }}, {% endfor %}]
+	var markerArray = [];
+	{% for marker in chart_data.markers %}
+		var marker{{ forloop.counter0 }} = {
+			datasetLabel: '{{ marker.app_name }}',
+			dataIndex: {{ marker.timeline_index }},
+			reference: '{{ marker.marker }}'
 		};
-		datasets.push(dataset{{ forloop.counter0 }});
+		markerArray.push(marker{{ forloop.counter0 }});
 	{% endfor %}
 
 	Chart.defaults.global.defaultFontColor = '#fff';
@@ -163,142 +177,40 @@
 				position: 'bottom',
 			},
 			markers: {
-				display: true,
-				fontColor: '#fff',
+				display: false,
+				fontColor: '#000',
 				fontSize: 12,
-				references: [
-					/*// MyFRITZ!App Android
-					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 5, reference: 'MyFRITZ!App\n2.13.4'},
-					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 8, reference: 'MyFRITZ!App\n2.13.5'},
-					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 15, reference: 'MyFRITZ!App\n2.13.6'},
-					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 25, reference: 'MyFRITZ!App\n2.13.7'},
-					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 29, reference: 'MyFRITZ!App\n2.13.8'},
-					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 37, reference: 'MyFRITZ!App\n2.13.9'},
-					{ datasetLabel: 'MyFRITZ!App Android', dataIndex: 40, reference: 'MyFRITZ!App\n2.13.10'},
-
-					// FRITZ!App Fon Android
-					{ datasetLabel: 'FRITZ!App Fon Android', dataIndex: 4, reference: 'FRITZ!App Fon\n1.90.7'},
-					//{ datasetLabel: 'FRITZ!App Fon Android', dataIndex: 7, reference: 'FRITZ!App Fon\n1.90.8'},
-					{ datasetLabel: 'FRITZ!App Fon Android', dataIndex: 7, reference: 'FRITZ!App Fon\n1.90.9'},
-					{ datasetLabel: 'FRITZ!App Fon Android', dataIndex: 37, reference: 'FRITZ!App Fon\n1.90.10'},
-
-					// FRITZ!App WLAN Android
-					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 1, reference: 'FRITZ!App WLAN\n2.8.10'},
-					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 5, reference: 'FRITZ!App WLAN\n2.8.11'},
-					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 7, reference: 'FRITZ!App WLAN\n2.8.12'},
-					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 12, reference: 'FRITZ!App WLAN\n2.8.13'},
-					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 23, reference: 'FRITZ!App WLAN\n2.8.14'},
-					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 37, reference: 'FRITZ!App WLAN\n2.8.15'},
-					{ datasetLabel: 'FRITZ!App WLAN Android', dataIndex: 39, reference: 'FRITZ!App WLAN\n2.8.16'},
-
-					// FRITZ!App TV Android
-					{ datasetLabel: 'FRITZ!App TV Android', dataIndex: 13, reference: 'FRITZ!App TV\n1.5.10'},
-					{ datasetLabel: 'FRITZ!App TV Android', dataIndex: 27, reference: 'FRITZ!App TV\n1.5.11'},
-
-					// MyFRITZ!App iOS
-					{ datasetLabel: 'MyFRITZ!App iOS', dataIndex: 5, reference: 'MyFRITZ!App\n2.0.5'},
-					{ datasetLabel: 'MyFRITZ!App iOS', dataIndex: 9, reference: 'MyFRITZ!App\n2.0.6'},
-					{ datasetLabel: 'MyFRITZ!App iOS', dataIndex: 11, reference: 'MyFRITZ!App\n2.0.7'},
-					{ datasetLabel: 'MyFRITZ!App iOS', dataIndex: 28, reference: 'MyFRITZ!App\n2.0.8'},
-
-					// FRITZ!App Fon iOS
-					{ datasetLabel: 'FRITZ!App Fon iOS', dataIndex: 6, reference: 'FRITZ!App Fon\n4.1.4'},
-					{ datasetLabel: 'FRITZ!App Fon iOS', dataIndex: 7, reference: 'FRITZ!App Fon\n4.1.5'},
-
-					// FRITZ!App WLAN iOS
-					{ datasetLabel: 'FRITZ!App WLAN iOS', dataIndex: 8, reference: 'FRITZ!App Fon\n1.4.1'},
-
-					// FRITZ!App TV iOS
-					{ datasetLabel: 'FRITZ!App TV iOS', dataIndex: 3, reference: 'FRITZ!App TV\n1.7.4'},
-					{ datasetLabel: 'FRITZ!App TV iOS', dataIndex: 4, reference: 'FRITZ!App TV\n1.7.5'},
-					{ datasetLabel: 'FRITZ!App TV iOS', dataIndex: 11, reference: 'FRITZ!App TV\n1.7.6'},*/
-				]
+				references: markerArray
 			}
 		}
 	};
 
-	Chart.plugins.register({
-		afterDraw: function(chartInstance) {
-			if (chartInstance.config.options.markers || chartInstance.config.options.markers.display) {
-				var references = chartInstance.config.options.markers.references || [];
-				var helpers = Chart.helpers;
-				var ctx = chartInstance.chart.ctx;
-				var fontColor = helpers.getValueOrDefault(chartInstance.config.options.markers.fontColor, chartInstance.config.options.defaultFontColor);
-				var fontSize = helpers.getValueOrDefault(chartInstance.config.options.markers.fontSize, Chart.defaults.global.defaultFontSize + 5);
-
-				// render the value of the chart above the bar
-				ctx.font = Chart.helpers.fontString(fontSize, 'normal', Chart.defaults.global.defaultFontFamily);
-				ctx.textAlign = 'center';
-				ctx.textBaseline = 'bottom';
-				ctx.fillStyle = fontColor;
-
-				chartInstance.data.datasets.forEach(function (dataset, dsindex) {
-
-					var meta = chartInstance.getDatasetMeta(dsindex);
-					if (meta.hidden) {
-						return
-					}
-					//console.log('hidden: ' + meta.hidden)
-
-					for (var i = 0; i < dataset.data.length; i++) {
-						// note, many browsers don't support the array.find() function.
-						// if you use this then be sure to provide a pollyfill
-						var refPoint = references.find(function(e) {
-							return e.datasetLabel == dataset.label && e.dataIndex === i
-						});
-
-						if (refPoint) {
-							var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
-							var yVal = model.y;
-
-							// value check
-							if (isNaN(yVal)) {
-								var beforeModel = dataset._meta[Object.keys(dataset._meta)[0]].data[i-1]._model;
-								var afterModel = dataset._meta[Object.keys(dataset._meta)[0]].data[i+2]._model;
-								yVal = (beforeModel.y + afterModel.y ) / 2.0
-							}
-
-							// background
-							ctx.fillStyle = 'rgba(255,255,255,0.8)';
-							ctx.strokeStyle = '#666';
-							ctx.lineJoin = "round";
-							ctx.lineWidth = 1;
-
-							roundRect(ctx, model.x - 100/2, yVal + 7, 100, 50, 20, true);
-
-							var lines = refPoint.reference.split('\n');
-							var lineheight = 18;
-							ctx.fillStyle = fontColor;
-							for (var j = 0; j<lines.length; j++) {
-								ctx.fillText(lines[j], model.x, yVal + 30 + (j*lineheight) );
-							}
-						}
-					}
-				});
-			}
-		}
-	});
-
-	function addDataset(dataset) {
-
-		var newDataset = {
-			label: dataset.label,
-			backgroundColor: dataset.color,
-			borderColor: dataset.color,
-			data: dataset.data,
-			borderDash: dataset.borderDash,
-			fill: false
+	{% for dataset in chart_data.datasets %}
+		var dataset{{ forloop.counter0 }} =  {
+			label: '{{ dataset.name }}',
+			backgroundColor: '{{ dataset.color }}',
+			borderColor: '{{ dataset.color }}',
+			{% if dataset.solid %}
+			{% else %}
+			borderDash: [5, 5],
+			{% endif %}
+			fill: false,
+			data: [ {% for item in dataset.data %}{{ item|cut:"0.00" }}, {% endfor %}],
 		};
-		config.data.datasets.push(newDataset);
+		config.data.datasets.push(dataset{{ forloop.counter0 }});
+	{% endfor %}
+
+	function toggleMarkers() {
+		config.options.markers.display = !config.options.markers.display;
+		ratingChart.chart.update();
 	}
 
-	for (var i = 0; i < datasets.length; i++) {
-		addDataset(datasets[i]);
-	}
+	var ratingChart = {};
 
 	window.onload = function() {
 		var ctx = document.getElementById('canvas').getContext('2d');
-		window.myLine = new Chart(ctx, config);
+		ratingChart = new Chart(ctx, config);
+		window.myLine = ratingChart;
 	};
 	</script>
 {% endblock %}
