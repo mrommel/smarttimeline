@@ -18,15 +18,19 @@ class App(models.Model):
     solid = models.BooleanField(default=True)
 
     def name_without_os(self):
+
         return self.name.replace("Android", "").replace("iOS", "")
 
     def current_version(self):
+
         return Version.objects.filter(app=self).latest('pub_date')
 
     def current_rating(self):
+
         return Rating.objects.filter(app=self).latest('pub_date')
 
     def last_month_rating(self):
+
         all_ratings = Rating.objects.filter(app=self).order_by('pub_date')
         last_month = month_delta(date.today(), -1)
         return next((x for x in all_ratings if x.pub_date > last_month), None)
@@ -35,6 +39,22 @@ class App(models.Model):
 
         curr = self.current_rating()
         last = self.last_month_rating()
+
+        if curr is not None and last is not None:
+            return curr.rating - last.rating
+
+        return 0.0
+
+    def six_month_ago_rating(self):
+
+        all_ratings = Rating.objects.filter(app=self).order_by('pub_date')
+        last_month = month_delta(date.today(), -6)
+        return next((x for x in all_ratings if x.pub_date > last_month), None)
+
+    def six_month_ago_rating_delta(self):
+
+        curr = self.current_rating()
+        last = self.six_month_ago_rating()
 
         if curr is not None and last is not None:
             return curr.rating - last.rating

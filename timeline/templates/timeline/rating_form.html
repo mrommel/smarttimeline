@@ -1,0 +1,59 @@
+{% extends "generic.html" %}
+
+{% block title %}Rating input{% endblock %}
+
+{% block rating_input_active %}active {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title">Add Ratings</h5>
+                </div>
+                
+                <form action="./rating_input" method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-12 pr-md-1">
+                                <div class="form-group">
+                                    {{ form.date.errors }}
+                                    <label for="{{ form.date.id_for_label }}">Date</label>
+                                    {{ form.date }}
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    {{ form.myf_android.errors }}
+                                    <label for="{{ form.myf_android.id_for_label }}">MyFRITZ!App Android</label>
+                                    {{ form.myf_android }}
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    {{ form.myf_ios.errors }}
+                                    <label for="{{ form.myf_ios.id_for_label }}">MyFRITZ!App iOS</label>
+                                    {{ form.myf_ios }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-fill btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

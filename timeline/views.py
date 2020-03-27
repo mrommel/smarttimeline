@@ -1,8 +1,11 @@
 from django.http import HttpResponse
-from django.template import loader
+from django.template import loader, RequestContext
 
 from .models import App, Version, Rating
 from .utils import first, ChartData, ChartDataset, ChartMarker
+from .form import AllRatingsForm
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 
 
 def index(request):
@@ -91,3 +94,22 @@ def ratings(request):
         'chart_data': chart_data
     }
     return HttpResponse(template.render(context, request))
+
+
+def add_ratings(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = AllRatingsForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect('/thanks/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = AllRatingsForm()
+
+    return render(request, 'timeline/rating_form.html', {'form': form})

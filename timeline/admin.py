@@ -28,3 +28,5 @@ class AppAdmin(admin.ModelAdmin):
 admin.site.register(App, AppAdmin)
 admin.site.register(Version)
 admin.site.register(Rating)
+
+admin.site.site_header = "MiRo Admin"
