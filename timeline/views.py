@@ -1,11 +1,11 @@
 from django.http import HttpResponse
-from django.template import loader, RequestContext
-
-from .models import App, Version, Rating
-from .utils import first, ChartData, ChartDataset, ChartMarker
-from .form import AllRatingsForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.template import loader
+
+from .form import AddRatingsForm, AddVersionModelForm
+from .models import App, Version, Rating
+from .utils import first, ChartData, ChartDataset, ChartMarker
 
 
 def index(request):
@@ -52,6 +52,46 @@ def releases(request):
     return HttpResponse(template.render(context, request))
 
 
+def add_release(request, release_id=-1):
+    """
+    add new release
+
+    :param release_id:
+    :param request:
+    :return:
+    """
+
+    try:
+        version = Version.objects.get(pk=release_id)
+    except Version.DoesNotExist:
+        version = None
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = AddVersionModelForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            form.save()
+            # redirect to a new URL:
+            return HttpResponseRedirect('/timeline/releases?action=added')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        if version is not None:
+            initial = {
+                'app': version.app,
+                'name': version.name,
+                'pub_date': version.pub_date,
+                'changelog': version.changelog}
+            form = AddVersionModelForm(initial=initial)
+        else:
+            form = AddVersionModelForm()
+
+    return render(request, 'timeline/release_form.html', {'form': form})
+
+
 def ratings(request):
     """
     ratings page
@@ -64,22 +104,31 @@ def ratings(request):
 
     chart_data = ChartData()
 
+    # get all dates
     for rating in Rating.objects.order_by('pub_date'):
         chart_data.timeline.append(rating.pub_date)
-
-        dataset = next((x for x in chart_data.datasets if x.name == rating.app.name), None)
-        if dataset is None:
-            chart_dataset = ChartDataset(rating.app.name, rating.app.color, rating.app.solid)
-            chart_dataset.data.append(rating.rating)
-            chart_data.datasets.append(chart_dataset)
-        else:
-            dataset.data.append(rating.rating)
 
     # remove duplicates
     chart_data.timeline = list(set(chart_data.timeline))
 
     # sort
     chart_data.timeline.sort()
+
+    # prefill
+    for app in App.objects.all():
+        chart_dataset = ChartDataset(app.name, app.color, app.solid)
+        for _ in chart_data.timeline:
+            chart_dataset.data.append('0.00')
+
+        chart_data.datasets.append(chart_dataset)
+
+    # actually fill
+    for rating in Rating.objects.order_by('pub_date'):
+        index = chart_data.timeline.index(rating.pub_date)
+
+        dataset = next((x for x in chart_data.datasets if x.name == rating.app.name), None)
+        if dataset is not None:
+            dataset.data[index] = rating.rating
 
     for version in Version.objects.all():
         timeline_item = first(chart_data.timeline, condition=lambda x: x >= version.pub_date)
@@ -97,19 +146,71 @@ def ratings(request):
 
 
 def add_ratings(request):
+    """
+    add new rating
+
+    :param request:
+    :return:
+    """
+
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = AllRatingsForm(request.POST)
+        form = AddRatingsForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
+            # get data
+            pub_date = form.cleaned_data['date']
+            rating_myf_android = form.cleaned_data['myf_android']
+            rating_myf_ios = form.cleaned_data['myf_ios']
+            rating_fon_android = form.cleaned_data['fon_android']
+            rating_fon_ios = form.cleaned_data['fon_ios']
+            rating_wlan_android = form.cleaned_data['wlan_android']
+            rating_wlan_ios = form.cleaned_data['wlan_ios']
+            rating_tv_android = form.cleaned_data['tv_android']
+            rating_tv_ios = form.cleaned_data['tv_ios']
+
+            # myfritz
+            app_myf_android = App.objects.get(id=1)
+            myf_android = Rating(app=app_myf_android, pub_date=pub_date, rating=rating_myf_android)
+            myf_android.save()
+
+            app_myf_ios = App.objects.get(id=2)
+            myf_ios = Rating(app=app_myf_ios, pub_date=pub_date, rating=rating_myf_ios)
+            myf_ios.save()
+
+            # fon
+            app_fon_android = App.objects.get(id=3)
+            myf_android = Rating(app=app_fon_android, pub_date=pub_date, rating=rating_fon_android)
+            myf_android.save()
+
+            app_fon_ios = App.objects.get(id=4)
+            myf_ios = Rating(app=app_fon_ios, pub_date=pub_date, rating=rating_fon_ios)
+            myf_ios.save()
+
+            # wlan
+            app_wlan_android = App.objects.get(id=5)
+            wlan_android = Rating(app=app_wlan_android, pub_date=pub_date, rating=rating_wlan_android)
+            wlan_android.save()
+
+            app_wlan_ios = App.objects.get(id=6)
+            wlan_ios = Rating(app=app_wlan_ios, pub_date=pub_date, rating=rating_wlan_ios)
+            wlan_ios.save()
+
+            # tv
+            app_tv_android = App.objects.get(id=7)
+            tv_android = Rating(app=app_tv_android, pub_date=pub_date, rating=rating_tv_android)
+            tv_android.save()
+
+            app_tv_ios = App.objects.get(id=8)
+            tv_ios = Rating(app=app_tv_ios, pub_date=pub_date, rating=rating_tv_ios)
+            tv_ios.save()
+
             # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
+            return HttpResponseRedirect('/timeline/ratings?action=added')
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = AllRatingsForm()
+        form = AddRatingsForm()
 
     return render(request, 'timeline/rating_form.html', {'form': form})

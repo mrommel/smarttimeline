@@ -5,13 +5,14 @@
 {% block rating_input_active %}active {% endblock %}
 
 {% block content %}
+    {% load static %}
     <div class="row">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
                     <h5 class="title">Add Ratings</h5>
                 </div>
-                
+
                 <form action="./rating_input" method="post">
                     {% csrf_token %}
                     {{ form.non_field_errors }}
@@ -44,12 +45,76 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    {{ form.fon_android.errors }}
+                                    <label for="{{ form.fon_android.id_for_label }}">FRITZ!App Fon Android</label>
+                                    {{ form.fon_android }}
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    {{ form.fon_ios.errors }}
+                                    <label for="{{ form.fon_ios.id_for_label }}">FRITZ!App Fon iOS</label>
+                                    {{ form.fon_ios }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    {{ form.wlan_android.errors }}
+                                    <label for="{{ form.wlan_android.id_for_label }}">FRITZ!App WLAN Android</label>
+                                    {{ form.wlan_android }}
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    {{ form.wlan_ios.errors }}
+                                    <label for="{{ form.wlan_ios.id_for_label }}">FRITZ!App WLAN iOS</label>
+                                    {{ form.wlan_ios }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    {{ form.tv_android.errors }}
+                                    <label for="{{ form.tv_android.id_for_label }}">FRITZ!App TV Android</label>
+                                    {{ form.tv_android }}
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-md-1">
+                                <div class="form-group">
+                                    {{ form.tv_ios.errors }}
+                                    <label for="{{ form.tv_ios.id_for_label }}">FRITZ!App TV iOS</label>
+                                    {{ form.tv_ios }}
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-fill btn-primary">Save</button>
                     </div>
                 </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title"></h5>
+                </div>
+
+                <div class="card-body">
+					<img src="{% static 'timeline/img/reviews.svg' %}" />
+				</div>
             </div>
         </div>
     </div>

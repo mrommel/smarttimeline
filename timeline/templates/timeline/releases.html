@@ -11,6 +11,10 @@
 	height: 18px;
 	vertical-align: middle;
 }
+.card-timeline .card-body i {
+    color: #9a9a9a;
+    font-size: 1.4em;
+}
 </style>
 {% endblock %}
 
@@ -20,7 +24,6 @@
 
 {% block content %}
 
-	
       			<div class="row">
       		
       				<div class="col-md-12">
@@ -68,7 +71,7 @@
 
       				<div class="col-md-12">
 
-      					<div class="card">
+      					<div class="card card-timeline">
       						<div class="card-header">
                 				<h4 class="card-title">Timeline</h4>
               				</div>
@@ -76,28 +79,34 @@
               				<div class="card-body">
 
 								<div class="table-responsive">
-							  <table class="table tablesorter " id="">
-								<thead class=" text-primary">
-								  <tr>
-									<th>App</th>
-									<th>Version</th>
-									<th>Changelog</th>
-									<th>Release date</th>
-								  </tr>
-								</thead>
-								<tbody>
+							  		<table class="table tablesorter " id="">
+										<thead class=" text-primary">
+								  			<tr>
+												<th>App</th>
+												<th>Version</th>
+												<th>Changelog</th>
+												<th>Release date</th>
+									  			<th></th>
+								  			</tr>
+										</thead>
+										<tbody>
 
-									{% for release in release_list %}
-								  <tr>
-									<td><img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;&nbsp;{{ release.app.name }}</td>
-									<td>{{ release.name }}</td>
-									<td>{{ release.changelog|linebreaks }}</td>
-									<td>{{ release.pub_date }}</td>
-								  </tr>
+										{% for release in release_list %}
+								  			<tr>
+												<td><img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;&nbsp;{{ release.app.name }}</td>
+												<td>{{ release.name }}</td>
+												<td>{{ release.changelog|linebreaks }}</td>
+												<td>{{ release.pub_date }}</td>
+									  			<td class="td-actions text-right">
+                          							<button type="button" rel="tooltip" onclick="location.href='/timeline/release_input?id={{ release.id }}';" title="" class="btn btn-link" data-original-title="Edit Task">
+                            							<i class="tim-icons icon-pencil"></i>
+                          							</button>
+                        						</td>
+								  			</tr>
 									{% endfor %}
-								</tbody>
-							  </table>
-							</div>
+										</tbody>
+							  		</table>
+								</div>
 
 							</div>
       					</div>

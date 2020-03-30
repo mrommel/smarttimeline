@@ -1,0 +1,85 @@
+{% extends "generic.html" %}
+
+{% block title %}Rating input{% endblock %}
+
+{% block release_input_active %}active {% endblock %}
+
+{% block content %}
+    {% load static %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title">Add Release</h5>
+                </div>
+
+                <form action="./release_input" method="post">
+                    {% csrf_token %}
+
+                    {{ form.non_field_errors }}
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    {{ form.app.errors }}
+                                    <label for="{{ form.app.for_label }}">{{ form.app.label }}</label>
+                                    {{ form.app }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    {{ form.name.errors }}
+                                    <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                                    {{ form.name }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 pr-md-1">
+                                <div class="form-group">
+                                    {{ form.pub_date.errors }}
+                                    <label for="{{ form.pub_date.id_for_label }}">{{ form.pub_date.label }}</label>
+                                    {{ form.pub_date }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 pr-md-1">
+                                <div class="form-group">
+                                    {{ form.changelog.errors }}
+                                    <label for="{{ form.changelog.id_for_label }}">{{ form.changelog.label }}</label>
+                                    {{ form.changelog }}
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-fill btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title"></h5>
+                </div>
+
+                <div class="card-body">
+					<img src="{% static 'timeline/img/reviews.svg' %}" />
+				</div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
