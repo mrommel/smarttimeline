@@ -1,0 +1,65 @@
+{% extends "generic.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block apps_active %}active {% endblock %}
+
+{% block styles %}
+    {% load static %}
+	<script src="{% static 'timeline/js/roundrect.js' %}"></script>
+	<style type="text/css">
+		.card-body img.app_icon {
+			width: 18px;
+			height: 18px;
+			vertical-align: middle;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title">Apps</h5>
+                </div>
+
+                <div class="card-body">
+					<div class="table-responsive">
+						<table class="table tablesorter " id="">
+							<thead class=" text-primary">
+								<tr>
+									<th>App</th>
+									<th>Current Version</th>
+									<th>Current Rating</th>
+								</tr>
+							</thead>
+							<tbody>
+
+							{% for app in app_list %}
+								<tr>
+									<td><img src="/static/timeline/img/apps/{{ app.name }}.png" class="app_icon" />&nbsp;&nbsp;<a href="/timeline/app/{{ app.id }}/">{{ app.name }}</a></td>
+									<td>{{ app.current_version.name }}</td>
+									<td>{{ app.current_rating.rating }}</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title"></h5>
+                </div>
+
+                <div class="card-body">
+					<img src="{% static 'timeline/img/reviews.svg' %}" />
+				</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

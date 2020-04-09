@@ -5,17 +5,17 @@
 {% block styles %} 
 	{% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'timeline/css/timeline.css' %}">
-<style type="text/css">
-.card-body img.app_icon {
-	width: 18px;
-	height: 18px;
-	vertical-align: middle;
-}
-.card-timeline .card-body i {
-    color: #9a9a9a;
-    font-size: 1.4em;
-}
-</style>
+	<style type="text/css">
+		.card-body img.app_icon {
+			width: 18px;
+			height: 18px;
+			vertical-align: middle;
+		}
+		.card-timeline .card-body i {
+			color: #9a9a9a;
+			font-size: 1.4em;
+		}
+	</style>
 {% endblock %}
 
 {% block title %}Releases{% endblock %}
@@ -93,7 +93,7 @@
 
 										{% for release in release_list %}
 								  			<tr>
-												<td><img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;&nbsp;{{ release.app.name }}</td>
+												<td><img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;&nbsp;<a href="/timeline/app/{{ release.app.id }}/">{{ release.app.name }}</a></td>
 												<td>{{ release.name }}</td>
 												<td>{{ release.changelog|linebreaks }}</td>
 												<td>{{ release.pub_date }}</td>

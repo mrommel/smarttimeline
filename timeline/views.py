@@ -24,6 +24,78 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
+def apps(request):
+    """
+    apps page
+
+    :param request: request
+    :return: response
+    """
+    app_list = App.objects.all
+    template = loader.get_template('timeline/apps.html')
+    context = {
+        'app_list': app_list,
+        'title': 'Apps'
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def app(request, app_id):
+    """
+    app page
+
+    :param app_id: id of app
+    :param request: request
+    :return: response
+    """
+    try:
+        app = App.objects.get(pk=app_id)
+    except Version.DoesNotExist:
+        app = None
+
+    chart_data = ChartData()
+
+    # get all dates
+    for rating in Rating.objects.order_by('pub_date'):
+        chart_data.timeline.append(rating.pub_date)
+
+    # remove duplicates
+    chart_data.timeline = list(set(chart_data.timeline))
+
+    # sort
+    chart_data.timeline.sort()
+
+    # prefill
+    chart_dataset = ChartDataset(app.name, app.color, app.solid)
+    for _ in chart_data.timeline:
+        chart_dataset.data.append('0.00')
+
+    chart_data.datasets.append(chart_dataset)
+
+    # actually fill
+    for rating in Rating.objects.filter(app=app).order_by('pub_date'):
+        index = chart_data.timeline.index(rating.pub_date)
+
+        dataset = next((x for x in chart_data.datasets if x.name == rating.app.name), None)
+        if dataset is not None:
+            dataset.data[index] = rating.rating
+
+    for version in Version.objects.filter(app=app):
+        timeline_item = first(chart_data.timeline, condition=lambda x: x >= version.pub_date)
+        timeline_index = chart_data.timeline.index(timeline_item)
+
+        marker_text = '%s#%s' % (version.app.name_without_os(), version.name)
+        chart_data.markers.append(ChartMarker(version.app.name, timeline_index, marker_text))
+
+    template = loader.get_template('timeline/app.html')
+    context = {
+        'app': app,
+        'title': 'App - %s' % app.name,
+        'chart_data': chart_data
+    }
+    return HttpResponse(template.render(context, request))
+
+
 def releases(request):
     """
     releases page

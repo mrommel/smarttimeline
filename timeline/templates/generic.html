@@ -14,6 +14,17 @@
     	<link rel="stylesheet" type="text/css" href="{% static 'timeline/css/black-dashboard.min.css' %}">
     	<link rel="stylesheet" type="text/css" href="{% static 'timeline/css/nucleo-icons.css' %}">
 
+		<style type="text/css">
+			a {
+				color: #fff;
+				font-weight: 300;
+			}
+			a:hover {
+				color: #1d8cf8;
+			}
+			grid-auto-rows: 1fr;
+		</style>
+
     	{% block styles %} {% endblock %}
     
   	</head>
@@ -38,6 +49,12 @@
            				<a href="/timeline/dashboard">
               				<i class="tim-icons icon-bullet-list-67"></i>
               				<p>Dashboard</p>
+            			</a>
+          			</li>
+					<li class="{% block apps_active %} {% endblock %}">
+            			<a href="/timeline/apps">
+              				<i class="tim-icons icon-app"></i>
+              				<p>Apps</p>
             			</a>
           			</li>
           			<li class="{% block releases_active %} {% endblock %}">

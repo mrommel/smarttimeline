@@ -4,6 +4,21 @@
 
 {% block rating_input_active %}active {% endblock %}
 
+{% block styles %}
+    <style type="text/css">
+        .btn-primary {
+            background: #e14eca;
+            background-image: linear-gradient(to bottom left,#1d8cf8,#11cdef,#1d8cf8);
+            background-size: 210% 210%;
+            background-position: 100% 0;
+            background-color: #1d8cf8;
+            transition: all .15s ease;
+            box-shadow: none;
+            color: #fff;
+        }
+       </style>
+{% endblock %}
+
 {% block content %}
     {% load static %}
     <div class="row">
