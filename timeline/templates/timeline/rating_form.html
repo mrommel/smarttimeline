@@ -28,7 +28,7 @@
                     <h5 class="title">Add Ratings</h5>
                 </div>
 
-                <form action="./rating_input" method="post">
+                <form action="/timeline/ratings/add/" method="post">
                     {% csrf_token %}
                     {{ form.non_field_errors }}
                     <div class="card-body">

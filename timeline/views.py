@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
 
+from cms.models import Content
 from .form import AddRatingsForm, AddVersionModelForm
 from .models import App, Version, Rating
 from .utils import first, ChartData, ChartDataset, ChartMarker
@@ -16,10 +17,17 @@ def index(request):
     :return: response
     """
     app_list = App.objects.all
+
+    try:
+        content_data = Content.objects.get(pk=1)
+    except Content.DoesNotExist:
+        content_data = None
+
     template = loader.get_template('timeline/dashboard.html')
     context = {
         'app_list': app_list,
-        'title': 'Dashboard'
+        'title': 'Dashboard',
+        'content': content_data
     }
     return HttpResponse(template.render(context, request))
 
@@ -202,12 +210,16 @@ def ratings(request):
         if dataset is not None:
             dataset.data[index] = rating.rating
 
+    # problem: there must be a rating after the last release
     for version in Version.objects.all():
-        timeline_item = first(chart_data.timeline, condition=lambda x: x >= version.pub_date)
-        timeline_index = chart_data.timeline.index(timeline_item)
+        try:
+            timeline_item = first(chart_data.timeline, condition=lambda x: x >= version.pub_date)
+            timeline_index = chart_data.timeline.index(timeline_item)
 
-        marker_text = '%s#%s' % (version.app.name_without_os(), version.name)
-        chart_data.markers.append(ChartMarker(version.app.name, timeline_index, marker_text))
+            marker_text = '%s#%s' % (version.app.name_without_os(), version.name)
+            chart_data.markers.append(ChartMarker(version.app.name, timeline_index, marker_text))
+        except StopIteration as e:
+            print("cant add %s" % version)
 
     context = {
         'app_list': app_list,

@@ -1,0 +1,292 @@
+{% extends "generic.html" %}
+
+{% block menu %}red{% endblock %}
+
+{% block styles %}
+    {% load static %}
+    <script src="{% static 'timeline/js/jquery.min.js' %}"></script>
+    <style type="text/css">
+        .off-canvas-sidebar, .sidebar {
+            background: linear-gradient(0deg,#ff002b,#ff4800);
+        }
+    </style>
+
+	<script>
+		function load(configuration) {
+			$.ajax({
+				dataType: 'json',
+				url: '/fritzbox/check/' + configuration + '/',
+				error: function() {
+					$('<p>failure</p>').appendTo('#result' + configuration);
+				},
+				success: function( data ) {
+					if (data.modelname == null) {
+						$('#address' + configuration).replaceWith('<p>' + data.address + '</p>');
+						$('#result' + configuration).replaceWith('-');
+					} else {
+						$('#address' + configuration).replaceWith('<p><a href="javascript:detail(' + configuration + ');">' + data.address + '</a></p>');
+						$('#result' + configuration).replaceWith('<p><a href="javascript:detail(' + configuration + ');">' + data.modelname + '</a></p>');
+					}
+				}
+			 });
+		}
+
+		function detail(configuration) {
+			//console.log('detail for ' + configuration);
+			$.ajax({
+				dataType: 'json',
+				url: '/fritzbox/hosts/' + configuration + '/',
+				error: function() {
+					console.log('error');
+				},
+				success: function( data ) {
+					//console.log('success: get_hosts_info.=' + data.get_hosts_info);
+
+					var str = "";
+					for(var i = 0; i < data.get_hosts_info.length; i++) {
+					    str = str + '<p>' + data.get_hosts_info[i].name + ' (' + data.get_hosts_info[i].ip + ') -> ' + data.get_hosts_info[i].speed + ' Mbit/s</p>';
+					}
+
+					$('#get_hosts_info-list').replaceWith('<p id="get_hosts_info-list">' + str + '</p>');
+				}
+			});
+
+			$.ajax({
+				dataType: 'json',
+				url: '/fritzbox/wifi/' + configuration + '/',
+				error: function() {
+					console.log('error');
+				},
+				success: function( data ) {
+					//console.log('success: wlan_ext_info.NewX_AVM-DE_APEnabled=' + data.wlan_ext_info['NewX_AVM-DE_APEnabled']);
+					//console.log('success: wlan_ext_info.NewX_AVM-DE_APType=' + data.wlan_ext_info['NewX_AVM-DE_APType']);
+					//console.log('success:data.clients=' + data.clients.length);
+
+                    $('#wlan_ssid').replaceWith('<p id="wlan_ssid">' + data.ssid + '</p>');
+                    $('#wlan_bssid').replaceWith('<p id="wlan_bssid">' + data.bssid + '</p>');
+
+                    $('#wlan_ext_info-NewX_AVM-DE_APEnabled').replaceWith('<p id="wlan_ext_info-NewX_AVM-DE_APEnabled">' + data.wlan_ext_info['NewX_AVM-DE_APEnabled'] + '</p>');
+					$('#wlan_ext_info-NewX_AVM-DE_APType').replaceWith('<p id="wlan_ext_info-NewX_AVM-DE_APType">' + data.wlan_ext_info['NewX_AVM-DE_APType'] + '</p>');
+				    $('#host_numbers').replaceWith('<p id="host_numbers">' + data.host_numbers + '</p>');
+
+				    var str = "";
+					for(var i = 0; i < data.clients.length; i++) {
+					    str = str + '<p>' + data.clients[i].name + ' (' + data.clients[i].ip + ') -> ' + data.clients[i].speed + ' Mbit/s</p>';
+					}
+
+					$('#wifi-hosts_info-list').replaceWith('<p id="wifi-hosts_info-list">' + str + '</p>');
+					$('#wifi-totalAssociations').replaceWith('<p id="wifi-totalAssociations">' + data.total_associations + '</p>');
+
+				}
+			});
+
+			$.ajax({
+				dataType: 'json',
+				url: '/fritzbox/status/' + configuration + '/',
+				error: function() {
+					console.log('error');
+				},
+				success: function( data ) {
+					$('#is_connected').replaceWith('<p id="is_connected">' + data.is_connected + '</p>');
+				    $('#wan_access_type').replaceWith('<p id="wan_access_type">' + data.wan_access_type + '</p>');
+				    $('#upstream').replaceWith('<p id="upstream">' + data.upstream_str + '</p>');
+				    $('#downstream').replaceWith('<p id="downstream">' + data.downstream_str + '</p>');
+				    $('#uptime').replaceWith('<p id="uptime">' + data.uptime_str + '</p>');
+				}
+			});
+		}
+	</script>
+{% endblock %}
+
+{% block title %}FRITZ!Box{% endblock %}
+
+{% block content %}
+	<div class="row">
+
+		<div class="col-md-6">
+
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title">Boxes</h4>
+				</div>
+
+				<div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>IP-Address</th>
+                                    <th>FRITZ!Box</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for configuration in configurations %}
+                                    <tr>
+                                        <td>{{ configuration }}</td>
+                                        <td><div id="address{{ configuration }}"><img src="{% static 'timeline/img/progress.gif' %}" width="24" /></div></td>
+                                        <td><div id="result{{ configuration }}"></div></td>
+                                    </tr>
+                                    <script>
+                                        load({{ configuration }});
+                                    </script>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+			</div>
+		</div>
+
+        <div class="col-lg-6 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title"></h5>
+                </div>
+
+                <div class="card-body">
+					<img src="{% static 'timeline/img/fritzbox_7590_left_de_640x400.png' %}" width="300" />
+				</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">LAN</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Key</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>get_hosts_info</td>
+                                    <td><p id="get_hosts_info-list">-</p></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+		</div>
+
+		<div class="col-md-6">
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">WLAN</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Key</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SSID</td>
+                                    <td><p id="wlan_ssid">-</p></td>
+                                </tr>
+                                <tr>
+                                    <td>BSSID</td>
+                                    <td><p id="wlan_bssid">-</p></td>
+                                </tr>
+                                <tr>
+                                    <td>Guest AP enabled</td>
+                                    <td><p id="wlan_ext_info-NewX_AVM-DE_APEnabled">-</p></td>
+                                </tr>
+                                <tr>
+                                    <td>Guest AP Type</td>
+                                    <td><p id="wlan_ext_info-NewX_AVM-DE_APType">-</p></td>
+                                </tr>
+                                <tr>
+                                    <td>host_numbers</td>
+                                    <td><p id="host_numbers">-</p></td>
+                                </tr>
+                                <tr>
+                                    <td>Clients</td>
+                                    <td><p id="wifi-hosts_info-list">-</p></td>
+                                </tr>
+                                <tr>
+                                    <td>Associations</td>
+                                    <td><p id="wifi-totalAssociations">-</p></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+
+    <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Status</h4>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Key</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>is_connected</td>
+                                        <td><p id="is_connected">-</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>wan_access_type</td>
+                                        <td><p id="wan_access_type">-</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>upstream</td>
+                                        <td><p id="upstream">-</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>downstream</td>
+                                        <td><p id="downstream">-</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>uptime</td>
+                                        <td><p id="uptime">-</p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

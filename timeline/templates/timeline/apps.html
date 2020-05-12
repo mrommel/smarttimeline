@@ -38,7 +38,7 @@
 
 							{% for app in app_list %}
 								<tr>
-									<td><img src="/static/timeline/img/apps/{{ app.name }}.png" class="app_icon" />&nbsp;&nbsp;<a href="/timeline/app/{{ app.id }}/">{{ app.name }}</a></td>
+									<td><img src="/static/timeline/img/apps/{{ app.name }}.png" class="app_icon" />&nbsp;&nbsp;<a href="/timeline/apps/{{ app.id }}/">{{ app.name }}</a></td>
 									<td>{{ app.current_version.name }}</td>
 									<td>{{ app.current_rating.rating }}</td>
 								</tr>

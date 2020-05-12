@@ -32,7 +32,7 @@
     	<div class="wrapper">
     
     	<!-- side bar -->
-    	<div class="sidebar" data="blue">
+    	<div class="sidebar" data="{% block menu %}blue{% endblock %}" id="sidebar">
     	
     		<div class="sidebar-wrapper">
         		<div class="logo">
@@ -52,37 +52,40 @@
             			</a>
           			</li>
 					<li class="{% block apps_active %} {% endblock %}">
-            			<a href="/timeline/apps">
+            			<a href="/timeline/apps/">
               				<i class="tim-icons icon-app"></i>
               				<p>Apps</p>
             			</a>
           			</li>
           			<li class="{% block releases_active %} {% endblock %}">
-            			<a href="/timeline/releases">
+            			<a href="/timeline/releases/">
               				<i class="tim-icons icon-spaceship"></i>
               				<p>Releases</p>
             			</a>
           			</li>
 					<li class="{% block release_input_active %} {% endblock %}">
-						<a href="/timeline/release_input">
+						<a href="/timeline/releases/add">
 							<i class="tim-icons icon-simple-add"></i>
               				<p>add Release</p>
 						</a>
 					</li>
 
           			<li class="{% block ratings_active %} {% endblock %}">
-            			<a href="/timeline/ratings">
+            			<a href="/timeline/ratings/">
               				<i class="tim-icons icon-chart-bar-32"></i>
               				<p>Ratings</p>
             			</a>
           			</li>
 					<li class="{% block rating_input_active %} {% endblock %}">
-						<a href="/timeline/rating_input">
+						<a href="/timeline/ratings/add">
 							<i class="tim-icons icon-simple-add"></i>
               				<p>add Ratings</p>
 						</a>
 					</li>
 					<!-- -->
+					<li>
+						<br /><br /><br />
+					</li>
           			<li>
             			<a href="/admin" target="_BLANK">
               				<i class="tim-icons icon-settings"></i>
@@ -151,6 +154,11 @@
 						<li class="nav-item">
 							<a href="javascript:void(0)" class="nav-link">
 								Blog
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="/fritzbox/dashboard" class="nav-link">
+								FRITZ!Box TR-064 Listing
 							</a>
 						</li>
 					</ul>

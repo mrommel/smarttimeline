@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-	path('timeline/', include('timeline.urls')),
+    path('timeline/', include('timeline.urls')),
+    path('fritzbox/', include('fritzbox.urls')),
+    path('cms/', include('cms.urls')),
+    path('roadmap/', include('roadmap.urls')),
     path('admin/', admin.site.urls),
 ]

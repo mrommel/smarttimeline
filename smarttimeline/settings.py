@@ -32,6 +32,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'timeline.apps.TimelineConfig',
+    'fritzbox.apps.FritzboxConfig',
+    'cms.apps.CmsConfig',
+    'roadmap.apps.RoadmapConfig',
     'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',

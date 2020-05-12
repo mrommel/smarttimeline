@@ -1,13 +1,15 @@
 # SmartTimeline
 
-project to track app ratings and app releases
+project to 
+- track app ratings and app releases
+- monitor fritzbox
 
 ## run the environment
 source ~/.virtualenvs/smarttimeline/bin/activate
 python3 manage.py runserver
 deactivate
 
-
+=> http://127.0.0.1:8000/timeline/dashboard
 
 
 ## setup
@@ -32,6 +34,8 @@ python3 manage.py startapp timeline
 
 python3 manage.py makemigrations timeline
 python3 manage.py migrate
+
+python3 manage.py makemigrations cms
 
 ## Links
 

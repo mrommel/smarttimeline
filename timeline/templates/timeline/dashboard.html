@@ -1,41 +1,90 @@
 {% extends "generic.html" %}
 
+{% block styles %}
+    {% load static %}
+	<style type="text/css">
+		.blockquote.blockquote-blue {
+    		border-color: #1d8cf8;
+    		color: #1d8cf8;
+		}
+	</style>
+{% endblock %}
+
 {% block title %}Dashboard{% endblock %}
 
 {% block dashboard_active %}active {% endblock %}
 
 {% block content %}
-      			<div class="row">
-      		
-      				<div class="col-md-6">
-      				
-      					<div class="card">
-      						<div class="card-header">
-                				<h4 class="card-title">Useful links</h4>
-              				</div>
-              				
-              				<div class="card-body">
+	<div class="row">
 
-              					<div class="alert alert-info alert-with-icon">
-                  					<span data-notify="icon" class="tim-icons icon-link-72"></span>
-									<span data-notify="message"><a href="" target="_blank">Jazz: Android Backlog</a></span>
-                				</div>
-								<div class="alert alert-info alert-with-icon">
-                  					<span data-notify="icon" class="tim-icons icon-link-72"></span>
-									<span data-notify="message"><a href="" target="_blank">Jazz: iOS Backlog</a></span>
-                				</div>
-								<div class="alert alert-info alert-with-icon">
-                  					<span data-notify="icon" class="tim-icons icon-link-72"></span>
-									<span data-notify="message"><a href="" target="_blank">Wiki</a></span>
-                				</div>
-								<div class="alert alert-info alert-with-icon">
-                  					<span data-notify="icon" class="tim-icons icon-link-72	"></span>
-									<span data-notify="message"><a href="http://jazzfile.avm.de/PM/PMGui/App-Prototypen/" target="_blank">App Prototypes</a></span>
-                				</div>
+		<div class="col-md-6">
 
-              				</div>
-      					</div>
-      				</div>
-      			</div>
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title">Useful links</h4>
+				</div>
+
+				<div class="card-body">
+
+					<div class="alert alert-info alert-with-icon">
+						<span data-notify="icon" class="tim-icons icon-link-72"></span>
+						<span data-notify="message"><a href="" target="_blank">Jazz: Android Backlog</a></span>
+					</div>
+					<div class="alert alert-info alert-with-icon">
+						<span data-notify="icon" class="tim-icons icon-link-72"></span>
+						<span data-notify="message"><a href="" target="_blank">Jazz: iOS Backlog</a></span>
+					</div>
+					<div class="alert alert-info alert-with-icon">
+						<span data-notify="icon" class="tim-icons icon-link-72"></span>
+						<span data-notify="message"><a href="" target="_blank">Wiki</a></span>
+					</div>
+					<div class="alert alert-info alert-with-icon">
+						<span data-notify="icon" class="tim-icons icon-link-72	"></span>
+						<span data-notify="message"><a href="http://jazzfile.avm.de/PM/PMGui/App-Prototypen/" target="_blank">App Prototypes</a></span>
+					</div>
+
+					<div class="alert alert-info alert-with-icon">
+						<span data-notify="icon" class="tim-icons icon-link-72"></span>
+						<span data-notify="message"><a href="https://meet.google.com/wgm-ptdf-egm" target="_blank">Sync mit Sven</a></span>
+					</div>
+					<div class="alert alert-info alert-with-icon">
+						<span data-notify="icon" class="tim-icons icon-link-72"></span>
+						<span data-notify="message"><a href="https://meet.google.com/hxh-bynf-mej" target="_blank">iOS Daily</a></span>
+					</div>
+					<div class="alert alert-info alert-with-icon">
+						<span data-notify="icon" class="tim-icons icon-link-72"></span>
+						<span data-notify="message"><a href="https://meet.google.com/dhx-ifdi-kbi" target="_blank">Android Daily</a></span>
+					</div>
+					<div class="alert alert-info alert-with-icon">
+						<span data-notify="icon" class="tim-icons icon-link-72"></span>
+						<span data-notify="message"><a href="" target="_blank">App JF</a></span>
+					</div>
+					<div class="alert alert-info alert-with-icon">
+						<span data-notify="icon" class="tim-icons icon-link-72"></span>
+						<span data-notify="message"><a href="" target="_blank">PM JF</a></span>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="col-md-6">
+
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title">{{ content.title }}</h4>
+					</div>
+
+					<div class="card-body">
+						{% for paragraph in content.paragraphs %}
+						<h4>{{ paragraph.headline }}</h4>
+						<p class="{{ paragraph.cssSytle }}">{{ paragraph.text }}</p>
+						<p>&nbsp;</p>
+						{% endfor %}
+					</div>
+				</div>
+		</div>
+	</div>
+		<!-- http://127.0.0.1:8000/cms/content/1/ -->
 
 {% endblock %}
