@@ -15,6 +15,13 @@
     	<link rel="stylesheet" type="text/css" href="{% static 'timeline/css/nucleo-icons.css' %}">
 
 		<style type="text/css">
+			div.divider {
+    			bottom: 0;
+    			margin-left: 15px;
+    			height: 1px;
+    			width: calc(100% - 30px);
+    			background: hsla(0,0%,100%,.5);
+			}
 			a {
 				color: #fff;
 				font-weight: 300;
@@ -23,6 +30,8 @@
 				color: #1d8cf8;
 			}
 			grid-auto-rows: 1fr;
+
+
 		</style>
 
     	{% block styles %} {% endblock %}
@@ -82,10 +91,19 @@
               				<p>add Ratings</p>
 						</a>
 					</li>
-					<!-- -->
-					<li>
-						<br /><br /><br />
-					</li>
+				</ul>
+				<div class="divider">&nbsp;</div>
+				<ul class="nav">
+          			<li class="{% block roadmap_active %} {% endblock %}">
+            			<a href="/roadmap">
+              				<i class="tim-icons icon-settings"></i>
+              				<p>Roadmaps</p>
+            			</a>
+          			</li>
+        		</ul>
+				<div class="divider">&nbsp;</div>
+				<br /><br /><br />
+				<ul class="nav">
           			<li>
             			<a href="/admin" target="_BLANK">
               				<i class="tim-icons icon-settings"></i>

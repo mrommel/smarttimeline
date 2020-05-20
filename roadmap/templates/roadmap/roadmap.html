@@ -1,0 +1,56 @@
+{% extends "generic.html" %}
+
+{% block menu %}none{% endblock %}
+
+{% block styles %}
+    {% load static %}
+    <script src="{% static 'timeline/js/jquery.min.js' %}"></script>
+    <script src="{% static 'roadmap/js/roadmap.js' %}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'roadmap/css/roadmap.css' %}">
+    <style type="text/css">
+            .off-canvas-sidebar, .sidebar {
+                background: linear-gradient(0deg,#58e300,#3a9600);
+            }
+    </style>
+{% endblock %}
+
+{% block title %}Roadmap{% endblock %}
+
+{% block roadmap_active %}active {% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{{ plan.name }}</h4>
+            </div>
+
+            <div class="card-body">
+                <div class="chart-wrapper">
+                    <ul class="chart-values">
+                        {% for month in plan.months %}
+                        <li>{{ month }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% for lane in plan.lanes %}
+                        <div class="chart-lane">
+                            <div class="chart-title" style="background-color: {{ lane.color }};">{{ lane.name }}</div>
+                            <ul class="chart-bars lane" style="background-color: {{ lane.background_color }};">
+                                {% for item in lane.items %}
+                                <li data-duration="{{ item.start_date_str }}-{{ item.end_date_str }}" data-color="{{ lane.color }}">{{ item.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

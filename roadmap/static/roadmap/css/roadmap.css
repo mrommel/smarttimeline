@@ -1,0 +1,92 @@
+/* CHART
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.chart-wrapper ul {
+  list-style: none;
+}
+
+.chart-wrapper a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.chart-wrapper {
+  max-width: 1150px;
+  padding: 0 10px;
+}
+
+/* CHART-VALUES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.chart-wrapper .chart-values {
+  position: relative;
+  display: flex;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  padding-left: 100px;
+}
+
+.chart-wrapper .chart-values li {
+  flex: 1;
+  min-width: 50px;
+  text-align: center;
+  font-size: 10pt;
+}
+
+.chart-wrapper .chart-values li:not(:last-child) {
+  position: relative;
+}
+
+.chart-wrapper .chart-values li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  height: 300px;
+  border-right: 1px solid #cccccc;
+}
+
+/* CHART-BARS
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.chart-wrapper .chart-lane {
+    clear: left;
+    height:auto;
+    display: flex;
+}
+
+.chart-wrapper .chart-lane .chart-title {
+    float: left;
+    width: 80px;
+    margin-bottom: 1rem;
+    padding: 10px 10px;
+    color: var(--white);
+}
+
+.chart-wrapper .chart-lane ul {
+    float: left;
+    padding-inline-start: 0px;
+    flex: 1 1 100%;
+}
+
+.chart-wrapper .chart-bars li {
+  position: relative;
+  color: var(--white);
+  margin-bottom: 15px;
+  font-size: 12px;
+  border-radius: 20px;
+  padding: 10px 20px;
+  width: 0;
+  opacity: 0;
+  transition: all 0.65s linear 0.2s;
+}
+
+.chart-wrapper .chart-bars li:first-child {
+    margin-top: 15px;
+}
+
+.chart-wrapper .chart-lane ul.lane {
+    background: rgba(255, 255, 255, 50%);
+}
+
+@media screen and (max-width: 600px) {
+  .chart-wrapper .chart-bars li {
+    padding: 10px;
+  }
+}

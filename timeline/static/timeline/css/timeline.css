@@ -2,9 +2,6 @@
 section.main {
 	width: 80%;
 	margin: 0px auto;
-	/*background-image: url("background.png");
-	background-repeat: repeat-y;
-	background-position: 50% 100px;*/
 }
 
 section.title {
@@ -15,7 +12,6 @@ section.title {
 section.title h1 {
 	position: relative;
 	font-size: 24px;
-	/*font-weight: 900;*/
 	text-align: center;
 	color: rgba(255, 255, 255, 0.8);
 }

@@ -3,8 +3,11 @@
 project to 
 - track app ratings and app releases
 - monitor fritzbox
+- display a project roadmap
 
 ## run the environment
+
+cd ~/Prog/SmartTimeline/
 source ~/.virtualenvs/smarttimeline/bin/activate
 python3 manage.py runserver
 deactivate
