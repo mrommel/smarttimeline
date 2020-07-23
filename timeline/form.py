@@ -116,3 +116,17 @@ class AddRatingsForm(forms.Form):
             attrs={'class': 'form-control'}
         )
     )
+    smart_home_android = forms.DecimalField(
+        max_digits=3,
+        decimal_places=2,
+        widget=forms.NumberInput(
+            attrs={'class': 'form-control'}
+        )
+    )
+    smart_home_ios = forms.DecimalField(
+        max_digits=3,
+        decimal_places=2,
+        widget=forms.NumberInput(
+            attrs={'class': 'form-control'}
+        )
+    )

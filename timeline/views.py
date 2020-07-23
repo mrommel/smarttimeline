@@ -253,6 +253,8 @@ def add_ratings(request):
             rating_wlan_ios = form.cleaned_data['wlan_ios']
             rating_tv_android = form.cleaned_data['tv_android']
             rating_tv_ios = form.cleaned_data['tv_ios']
+            rating_smart_home_android = form.cleaned_data['smart_home_android']
+            rating_smart_home_ios = form.cleaned_data['smart_home_ios']
 
             # myfritz
             app_myf_android = App.objects.get(id=1)
@@ -289,6 +291,15 @@ def add_ratings(request):
             app_tv_ios = App.objects.get(id=8)
             tv_ios = Rating(app=app_tv_ios, pub_date=pub_date, rating=rating_tv_ios)
             tv_ios.save()
+
+            # smart home
+            app_smart_home_android = App.objects.get(id=9)
+            smart_home_android = Rating(app=app_smart_home_android, pub_date=pub_date, rating=rating_smart_home_android)
+            smart_home_android.save()
+
+            app_smart_home_ios = App.objects.get(id=10)
+            smart_home_ios = Rating(app=app_smart_home_ios, pub_date=pub_date, rating=rating_smart_home_ios)
+            smart_home_ios.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/timeline/ratings?action=added')
