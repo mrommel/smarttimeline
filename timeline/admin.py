@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.forms import forms
 
 from .models import App, Version, Rating
 from .form import VersionModelForm
@@ -25,8 +26,12 @@ class AppAdmin(admin.ModelAdmin):
     inlines = [RatingInline, VersionInline, ]
 
 
+class VersionAdmin(admin.ModelAdmin):
+    form = VersionModelForm
+
+
 admin.site.register(App, AppAdmin)
-admin.site.register(Version)
+admin.site.register(Version, VersionAdmin)
 admin.site.register(Rating)
 
 admin.site.site_header = "MiRo Admin"

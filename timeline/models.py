@@ -74,7 +74,7 @@ class Version(models.Model):
 
     # ...
     def __str__(self):
-        return self.name
+        return '%s, Version %s' % (self.app.name, self.name)
 
 
 class Rating(models.Model):
