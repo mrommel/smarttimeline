@@ -1,3 +1,6 @@
+import datetime
+import json
+
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -306,6 +309,27 @@ def add_ratings(request):
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = AddRatingsForm()
+        date = datetime.date.today()
+
+        from google_play_scraper import app
+        result_myf_android = app('de.avm.android.myfritz2', lang='en', country='us')
+        myf_android = "%.2f" % result_myf_android["score"]
+
+        result_fon_android = app('de.avm.android.fritzapp', lang='en', country='us')
+        fon_android = "%.2f" % result_fon_android["score"]
+
+        result_wlan_android = app('de.avm.android.wlanapp', lang='en', country='us')
+        wlan_android = "%.2f" % result_wlan_android["score"]
+
+        result_tv_android = app('de.avm.android.fritzapptv', lang='en', country='us')
+        tv_android = "%.2f" % result_tv_android["score"]
+
+        result_smart_home_android = app('de.avm.android.smarthome', lang='en', country='us')
+        smart_home_android = "%.2f" % result_smart_home_android["score"]
+
+        form_data = {'date': date, 'myf_android': myf_android, 'fon_android': fon_android, 'wlan_android': wlan_android,
+                     'tv_android': tv_android, 'smart_home_android': smart_home_android}
+
+        form = AddRatingsForm(form_data)
 
     return render(request, 'timeline/rating_form.html', {'form': form})
