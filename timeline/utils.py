@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 
 def month_delta(date, delta):
@@ -71,3 +71,15 @@ class ChartData:
         self.timeline = []
         self.datasets = []
         self.markers = []
+
+
+def prev_two_month(date_value=datetime.today()):
+    if date_value.month == 1:
+        return date_value.replace(month=11, year=date_value.year - 1)
+    elif date_value.month == 2:
+        return date_value.replace(month=12, year=date_value.year - 1)
+    else:
+        try:
+            return date_value.replace(month=date_value.month - 2)
+        except ValueError:
+            return prev_two_month(date_value=date_value.replace(day=date_value.day - 1))

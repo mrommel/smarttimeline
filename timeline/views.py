@@ -1,5 +1,4 @@
-import datetime
-import json
+from datetime import date
 
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -9,7 +8,7 @@ from django.template import loader
 from cms.models import Content
 from .form import AddRatingsForm, AddVersionModelForm
 from .models import App, Version, Rating
-from .utils import first, ChartData, ChartDataset, ChartMarker
+from .utils import first, ChartData, ChartDataset, ChartMarker, prev_two_month
 
 
 def index(request):
@@ -60,9 +59,9 @@ def app(request, app_id):
     :return: response
     """
     try:
-        app = App.objects.get(pk=app_id)
+        app_val = App.objects.get(pk=app_id)
     except Version.DoesNotExist:
-        app = None
+        app_val = None
 
     chart_data = ChartData()
 
@@ -77,21 +76,21 @@ def app(request, app_id):
     chart_data.timeline.sort()
 
     # prefill
-    chart_dataset = ChartDataset(app.name, app.color, app.solid)
+    chart_dataset = ChartDataset(app_val.name, app_val.color, app_val.solid)
     for _ in chart_data.timeline:
         chart_dataset.data.append('0.00')
 
     chart_data.datasets.append(chart_dataset)
 
     # actually fill
-    for rating in Rating.objects.filter(app=app).order_by('pub_date'):
-        index = chart_data.timeline.index(rating.pub_date)
+    for rating in Rating.objects.filter(app=app_val).order_by('pub_date'):
+        index_val = chart_data.timeline.index(rating.pub_date)
 
         dataset = next((x for x in chart_data.datasets if x.name == rating.app.name), None)
         if dataset is not None:
-            dataset.data[index] = rating.rating
+            dataset.data[index_val] = rating.rating
 
-    for version in Version.objects.filter(app=app):
+    for version in Version.objects.filter(app=app_val):
         timeline_item = first(chart_data.timeline, condition=lambda x: x >= version.pub_date)
         timeline_index = chart_data.timeline.index(timeline_item)
 
@@ -100,8 +99,8 @@ def app(request, app_id):
 
     template = loader.get_template('timeline/app.html')
     context = {
-        'app': app,
-        'title': 'App - %s' % app.name,
+        'app': app_val,
+        'title': 'App - %s' % app_val.name,
         'chart_data': chart_data
     }
     return HttpResponse(template.render(context, request))
@@ -198,8 +197,8 @@ def ratings(request):
     chart_data.timeline.sort()
 
     # prefill
-    for app in App.objects.all():
-        chart_dataset = ChartDataset(app.name, app.color, app.solid)
+    for app_val in App.objects.all():
+        chart_dataset = ChartDataset(app_val.name, app_val.color, app_val.solid)
         for _ in chart_data.timeline:
             chart_dataset.data.append('0.00')
 
@@ -207,11 +206,11 @@ def ratings(request):
 
     # actually fill
     for rating in Rating.objects.order_by('pub_date'):
-        index = chart_data.timeline.index(rating.pub_date)
+        index_val = chart_data.timeline.index(rating.pub_date)
 
         dataset = next((x for x in chart_data.datasets if x.name == rating.app.name), None)
         if dataset is not None:
-            dataset.data[index] = rating.rating
+            dataset.data[index_val] = rating.rating
 
     # problem: there must be a rating after the last release
     for version in Version.objects.all():
@@ -223,6 +222,68 @@ def ratings(request):
             chart_data.markers.append(ChartMarker(version.app.name, timeline_index, marker_text))
         except StopIteration as e:
             print("cant add %s" % version)
+
+    context = {
+        'app_list': app_list,
+        'title': 'Ratings',
+        'chart_data': chart_data
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def ratings_last_months(request):
+    """
+    ratings page of last two month
+
+    :param request: request
+    :return: response
+    """
+    app_list = App.objects.all
+    template = loader.get_template('timeline/ratings.html')
+
+    chart_data = ChartData()
+
+    # get all dates
+    two_month_ago = prev_two_month()
+    for rating in Rating.objects.order_by('pub_date'):
+        if rating.pub_date > two_month_ago.date():
+            chart_data.timeline.append(rating.pub_date)
+
+    # remove duplicates
+    chart_data.timeline = list(set(chart_data.timeline))
+
+    # sort
+    chart_data.timeline.sort()
+
+    # prefill
+    for app_val in App.objects.all():
+        chart_dataset = ChartDataset(app_val.name, app_val.color, app_val.solid)
+        for _ in chart_data.timeline:
+            chart_dataset.data.append('0.00')
+
+        chart_data.datasets.append(chart_dataset)
+
+    # actually fill
+    for rating in Rating.objects.order_by('pub_date'):
+        try:
+            index_val = chart_data.timeline.index(rating.pub_date)
+
+            dataset = next((x for x in chart_data.datasets if x.name == rating.app.name), None)
+            if dataset is not None:
+                dataset.data[index_val] = rating.rating
+        except ValueError:
+            pass
+
+    # problem: there must be a rating after the last release
+    for version in Version.objects.all():
+        try:
+            timeline_item = first(chart_data.timeline, condition=lambda x: x >= version.pub_date)
+            timeline_index = chart_data.timeline.index(timeline_item)
+
+            marker_text = '%s#%s' % (version.app.name_without_os(), version.name)
+            chart_data.markers.append(ChartMarker(version.app.name, timeline_index, marker_text))
+        except StopIteration as e:
+            print("cant add %s -> %s" % (version, e))
 
     context = {
         'app_list': app_list,
@@ -309,7 +370,7 @@ def add_ratings(request):
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        date = datetime.date.today()
+        date_val = date.today()
 
         from google_play_scraper import app
         result_myf_android = app('de.avm.android.myfritz2', lang='en', country='us')
@@ -327,7 +388,7 @@ def add_ratings(request):
         result_smart_home_android = app('de.avm.android.smarthome', lang='en', country='us')
         smart_home_android = "%.2f" % result_smart_home_android["score"]
 
-        form_data = {'date': date, 'myf_android': myf_android, 'fon_android': fon_android, 'wlan_android': wlan_android,
+        form_data = {'date': date_val, 'myf_android': myf_android, 'fon_android': fon_android, 'wlan_android': wlan_android,
                      'tv_android': tv_android, 'smart_home_android': smart_home_android}
 
         form = AddRatingsForm(form_data)

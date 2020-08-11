@@ -11,5 +11,6 @@ urlpatterns = [
     path('releases/add/', views.add_release, name='add_release'),
     path('releases/<int:release_id>/', views.add_release, name='add_release'),
     path('ratings/', views.ratings, name='ratings'),
+    path('lastratings/', views.ratings_last_months, name='ratings_last_months'),
     path('ratings/add/', views.add_ratings, name='add_ratings'),
 ]

@@ -1,3 +1,5 @@
+import decimal
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from colorfield.fields import ColorField
@@ -81,7 +83,10 @@ class Rating(models.Model):
     app = models.ForeignKey(App, on_delete=models.CASCADE)
     rating = models.DecimalField(max_digits=3, decimal_places=2)
     pub_date = models.DateField('date published')
-    
+
+    def rating_percent(self):
+        return self.rating * decimal.Decimal(20.0)
+
     # ...
     def __str__(self):
         return 'Bewertung %s vom %s' % (self.app.name, self.pub_date)
