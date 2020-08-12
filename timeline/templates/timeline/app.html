@@ -47,7 +47,53 @@
 
 		</div>
 	</div>
-	{{ app }}
+
+	<div class="row">
+        <div class="col-lg-8 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title">{{ app }}</h5>
+                </div>
+
+                <div class="card-body">
+					<div class="table-responsive">
+						<table class="table tablesorter " id="">
+							<thead class=" text-primary">
+								<tr>
+									<th>Version</th>
+									<th>Date</th>
+									<th>Changelog</th>
+								</tr>
+							</thead>
+							<tbody>
+
+							{% for version in app.versions %}
+								<tr>
+									<td>{{ version.name }}</td>
+									<td>{{ version.pub_date }}</td>
+									<td>{{ version.changelog|linebreaksbr }}</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="title"></h5>
+                </div>
+
+                <div class="card-body">
+					<img src="{% static 'timeline/img/reviews.svg' %}" />
+				</div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block scripts %}

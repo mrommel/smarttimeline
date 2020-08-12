@@ -27,6 +27,9 @@ class App(models.Model):
 
         return Version.objects.filter(app=self).latest('pub_date')
 
+    def versions(self):
+        return Version.objects.filter(app=self).order_by('-pub_date')
+
     def current_rating(self):
 
         return Rating.objects.filter(app=self).latest('pub_date')
