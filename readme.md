@@ -15,6 +15,9 @@ deactivate
 => http://127.0.0.1:8000/timeline/dashboard
 
 
+pip freeze > requirements.txt
+pip install -r requirements.txt
+
 ## setup
 
 ###### create virtual env
