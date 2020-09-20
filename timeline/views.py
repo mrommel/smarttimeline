@@ -226,6 +226,7 @@ def ratings(request):
     context = {
         'app_list': app_list,
         'title': 'Ratings',
+        'type': 'normal',
         'chart_data': chart_data
     }
     return HttpResponse(template.render(context, request))
@@ -288,6 +289,7 @@ def ratings_last_months(request):
     context = {
         'app_list': app_list,
         'title': 'Ratings',
+        'type': 'last',
         'chart_data': chart_data
     }
     return HttpResponse(template.render(context, request))

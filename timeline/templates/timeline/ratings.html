@@ -2,7 +2,8 @@
 
 {% block title %}Ratings{% endblock %}
 
-{% block ratings_active %}active {% endblock %}
+{% block ratings_active %}{% if type == "normal" %}active{% endif %} {% endblock %}
+{% block last_ratings_active %}{% if type == "last" %}active{% endif %} {% endblock %}
 
 {% block styles %}
 	{% load static %}
