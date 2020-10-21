@@ -116,8 +116,23 @@ def releases(request):
     app_list = App.objects.all
     release_list = Version.objects.order_by('-pub_date')
 
-    last_month = 27
+    releases_month = 0
+    releases_year = 0
+
+    first_item = release_list[0]
+    first_month = first_item.pub_date.month
+    first_year = first_item.pub_date.year
+
+    last_month = 12345
+
     for release_item in release_list:
+
+        if release_item.pub_date.year == first_year:
+            releases_year = releases_year + 1
+
+        if release_item.pub_date.month == first_month and release_item.pub_date.year == first_year:
+            releases_month = releases_month + 1
+
         if release_item.pub_date.month != last_month:
             release_item.first = True
         else:
@@ -129,7 +144,9 @@ def releases(request):
     context = {
         'app_list': app_list,
         'title': 'Releases',
-        'release_list': release_list
+        'release_list': release_list,
+        'releases_month': releases_month,
+        'releases_year': releases_year
     }
     return HttpResponse(template.render(context, request))
 

@@ -28,9 +28,35 @@ section.rocket {
 	text-align: center;
 }
 
+section.rocket .firstcol {
+    float: left;
+    width: 40%;
+    height: 180px;
+}
+section.rocket .thirdcol {
+    width: 40%;
+    height: 180px;
+	float: left;
+	display: inline-block;
+	vertical-align: bottom;
+}
+
+section.rocket .thirdcol span.normal {
+    color: white;
+    font-size: 16pt;
+    text-align: left;
+}
+
+section.rocket .thirdcol span.highlight {
+    color: orange;
+    font-size: 28pt;
+    text-align: left;
+}
+
 section.rocket img.rocket_icon {
-	width: 200px;
-	height: 200px;
+	float: left;
+    width: 20%;
+    height: 180px;
 	vertical-align: middle;
 }
 
