@@ -13,6 +13,12 @@ class MobileOS(models.TextChoices):
     IOS = 'iOS', _('iOS')
 
 
+class SemanticVersion(models.TextChoices):
+    MAJOR = 'Maj', _('Major')
+    MINOR = 'Min', _('Minor')
+    PATCH = 'Pat', _('Patch')
+
+
 class App(models.Model):
     name = models.CharField(max_length=200)
     mobile_os = models.CharField(max_length=3, choices=MobileOS.choices, default=MobileOS.ANDROID, )
@@ -74,12 +80,13 @@ class App(models.Model):
 class Version(models.Model):
     name = models.CharField(max_length=200)
     app = models.ForeignKey(App, on_delete=models.CASCADE)
+    semantic_version = models.CharField(max_length=3, choices=SemanticVersion.choices, default=SemanticVersion.PATCH, )
     changelog = models.CharField(max_length=1024)
     pub_date = models.DateField('date published')
 
     # ...
     def __str__(self):
-        return '%s, Version %s' % (self.app.name, self.name)
+        return '%s, Version %s (%s)' % (self.app.name, self.name, self.semantic_version)
 
 
 class Rating(models.Model):

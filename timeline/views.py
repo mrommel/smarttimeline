@@ -7,7 +7,7 @@ from django.template import loader
 
 from cms.models import Content
 from .form import AddRatingsForm, AddVersionModelForm
-from .models import App, Version, Rating
+from .models import App, Version, Rating, SemanticVersion
 from .utils import first, ChartData, ChartDataset, ChartMarker, prev_two_month
 
 
@@ -116,7 +116,9 @@ def releases(request):
     app_list = App.objects.all
     release_list = Version.objects.order_by('-pub_date')
 
-    releases_month = 0
+    major_releases_month = 0
+    minor_releases_month = 0
+    patch_releases_month = 0
     releases_year = 0
 
     first_item = release_list[0]
@@ -125,13 +127,20 @@ def releases(request):
 
     last_month = 12345
 
+    month = 'November'
+
     for release_item in release_list:
 
         if release_item.pub_date.year == first_year:
             releases_year = releases_year + 1
 
         if release_item.pub_date.month == first_month and release_item.pub_date.year == first_year:
-            releases_month = releases_month + 1
+            if release_item.semantic_version == SemanticVersion.MAJOR:
+                major_releases_month = major_releases_month + 1
+            if release_item.semantic_version == SemanticVersion.MINOR:
+                minor_releases_month = minor_releases_month + 1
+            if release_item.semantic_version == SemanticVersion.PATCH:
+                patch_releases_month = patch_releases_month + 1
 
         if release_item.pub_date.month != last_month:
             release_item.first = True
@@ -145,7 +154,10 @@ def releases(request):
         'app_list': app_list,
         'title': 'Releases',
         'release_list': release_list,
-        'releases_month': releases_month,
+        'major_releases_month': major_releases_month,
+        'minor_releases_month': minor_releases_month,
+        'patch_releases_month': patch_releases_month,
+        'month': month,
         'releases_year': releases_year
     }
     return HttpResponse(template.render(context, request))
@@ -159,6 +171,7 @@ def add_release(request, release_id=-1):
     :param request:
     :return:
     """
+    date_val = date.today()
 
     try:
         version = Version.objects.get(pk=release_id)
@@ -186,7 +199,8 @@ def add_release(request, release_id=-1):
                 'changelog': version.changelog}
             form = AddVersionModelForm(initial=initial)
         else:
-            form = AddVersionModelForm()
+            form_data = {'pub_date': date_val}
+            form = AddVersionModelForm(form_data)
 
     return render(request, 'timeline/release_form.html', {'form': form})
 

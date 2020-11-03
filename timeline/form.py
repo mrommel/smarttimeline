@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.widgets import TextInput
 
-from .models import App, Version
+from .models import App, Version, SemanticVersion
 
 
 class AppForm(forms.ModelForm):
@@ -18,7 +18,7 @@ class VersionModelForm(forms.ModelForm):
 
     class Meta:
         model = Version
-        fields = ['pub_date', 'name', 'changelog', ]
+        fields = ['pub_date', 'name', 'semantic_version', 'changelog', ]
 
 
 class AddVersionModelForm(forms.ModelForm):
@@ -33,6 +33,13 @@ class AddVersionModelForm(forms.ModelForm):
         label='Name',
         widget=forms.TextInput(
             attrs={'class': 'form-control'}
+        )
+    )
+    semantic_version = forms.ChoiceField(
+        label='Semantic version',
+        choices=SemanticVersion.choices,
+        widget=forms.Select(
+            attrs={'class': 'form-control'},
         )
     )
     pub_date = forms.DateField(
