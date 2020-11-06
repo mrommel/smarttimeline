@@ -179,6 +179,12 @@ section.timeline article div.inner h2 img.app_icon {
 	vertical-align: middle;
 }
 
+section.timeline article div.inner h2 img.semantic_version_icon {
+	width: 18px;
+	height: 18px;
+	vertical-align: middle;
+}
+
 section.timeline article img.release_icon {
 	width: 128px;
 	height: 128px;

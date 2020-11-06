@@ -70,7 +70,11 @@
 		  									<span class="date">
 												<span class="day">{{ release.pub_date|date:"d" }}<!--<sup>th</sup>--></span>
 		  									</span>
-		  									<h2 class="{{ release.app.mobile_os|lower }}"><img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;{{ release.app.name }} {{ release.name }}</h2>
+		  									<h2 class="{{ release.app.mobile_os|lower }}">
+												<img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;
+												{{ release.app.name }}&nbsp;{{ release.name }}
+												<img src="/static/timeline/img/semantic/release_{{ release.semantic_version }}.png" class="semantic_version_icon"/>
+											</h2>
 		  									<p>{{ release.changelog|linebreaksbr }}</p>
 										</div>
 	  								</article>
