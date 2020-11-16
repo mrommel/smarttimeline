@@ -72,6 +72,22 @@ class App(models.Model):
 
         return 0.0
 
+    def twelve_month_ago_rating(self):
+
+        all_ratings = Rating.objects.filter(app=self).order_by('pub_date')
+        last_month = month_delta(date.today(), -12)
+        return next((x for x in all_ratings if x.pub_date > last_month), None)
+
+    def twelve_month_ago_rating_delta(self):
+
+        curr = self.current_rating()
+        last = self.twelve_month_ago_rating()
+
+        if curr is not None and last is not None:
+            return curr.rating - last.rating
+
+        return 0.0
+
     # ...
     def __str__(self):
         return self.name

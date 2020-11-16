@@ -103,6 +103,7 @@
 									<th>Current Rating</th>
 									<th>1 Month ago (Delta)</th>
 									<th>6 Month ago (Delta)</th>
+									<th>12 Month ago (Delta)</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -124,6 +125,7 @@
 									</td>
 									<td>{{ app.last_month_rating.rating }} (<span class="{% if app.last_month_rating_delta < 0 %}negative{% elif app.last_month_rating_delta == 0.0 %}normal{% else %}positive{% endif %}">{{ app.last_month_rating_delta }}</span>)</td>
 									<td>{{ app.six_month_ago_rating.rating }} (<span class="{% if app.six_month_ago_rating_delta < 0 %}negative{% elif app.six_month_ago_rating_delta == 0.0 %}normal{% else %}positive{% endif %}">{{ app.six_month_ago_rating_delta }}</span>)</td>
+									<td>{{ app.twelve_month_ago_rating.rating }} (<span class="{% if app.twelve_month_ago_rating_delta < 0 %}negative{% elif app.twelve_month_ago_rating_delta == 0.0 %}normal{% else %}positive{% endif %}">{{ app.twelve_month_ago_rating_delta }}</span>)</td>
 								</tr>
 							{% endfor %}
 							</tbody>

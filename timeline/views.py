@@ -135,11 +135,11 @@ def releases(request):
             releases_year = releases_year + 1
 
         if release_item.pub_date.month == first_month and release_item.pub_date.year == first_year:
-            if release_item.semantic_version == SemanticVersion.MAJOR:
+            if release_item.semantic_version == SemanticVersion.MAJOR.value:
                 major_releases_month = major_releases_month + 1
-            if release_item.semantic_version == SemanticVersion.MINOR:
+            if release_item.semantic_version == SemanticVersion.MINOR.value:
                 minor_releases_month = minor_releases_month + 1
-            if release_item.semantic_version == SemanticVersion.PATCH:
+            if release_item.semantic_version == SemanticVersion.PATCH.value:
                 patch_releases_month = patch_releases_month + 1
 
         if release_item.pub_date.month != last_month:
@@ -158,7 +158,7 @@ def releases(request):
         'minor_releases_month': minor_releases_month,
         'patch_releases_month': patch_releases_month,
         'month': month,
-        'releases_year': releases_year
+        'releases_year': releases_year,
     }
     return HttpResponse(template.render(context, request))
 
