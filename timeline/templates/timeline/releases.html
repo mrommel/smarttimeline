@@ -43,8 +43,10 @@
 									<div class="thirdcol">
 										<br /><br />
 										<span class="normal">schon</span>
-										<span class="highlight">{{ major_releases_month }}</span>
-										<span class="normal">major ,</span>
+										{% if major_releases_month > 0 %}
+											<span class="highlight">{{ major_releases_month }}</span>
+											<span class="normal">major ,</span>
+										{% endif %}
 										<span class="highlight">{{ minor_releases_month }}</span>
 										<span class="normal">minor und</span>
 										<span class="highlight">{{ patch_releases_month }}</span>
