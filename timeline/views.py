@@ -1,8 +1,8 @@
-from datetime import date
+from datetime import date, timezone, datetime
 
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import loader
 
 from cms.models import Content
@@ -106,10 +106,25 @@ def app(request, app_id):
     return HttpResponse(template.render(context, request))
 
 
-def releases(request):
+def releases_redirect(request):
     """
     releases page
 
+    :param request: request
+    :return: response
+    """
+    today = date.today()
+
+    response = redirect('/timeline/releases/%d/%d' % (today.month, today.year))
+    return response
+
+
+def releases(request, release_month, release_year):
+    """
+    releases page
+
+    :param release_month:
+    :param release_year:
     :param request: request
     :return: response
     """
@@ -121,20 +136,14 @@ def releases(request):
     patch_releases_month = 0
     releases_year = 0
 
-    first_item = release_list[0]
-    first_month = first_item.pub_date.month
-    first_year = first_item.pub_date.year
-
-    last_month = 12345
-
-    month = 'November'
+    last_month = -1
 
     for release_item in release_list:
 
-        if release_item.pub_date.year == first_year:
+        if release_item.pub_date.year == release_year:
             releases_year = releases_year + 1
 
-        if release_item.pub_date.month == first_month and release_item.pub_date.year == first_year:
+        if release_item.pub_date.month == release_month and release_item.pub_date.year == release_year:
             if release_item.semantic_version == SemanticVersion.MAJOR.value:
                 major_releases_month = major_releases_month + 1
             if release_item.semantic_version == SemanticVersion.MINOR.value:
@@ -149,6 +158,9 @@ def releases(request):
 
         last_month = release_item.pub_date.month
 
+    my_date = datetime(release_year, release_month, 1, 4, tzinfo=timezone.utc)
+    release_month_str = my_date.strftime("%B")
+
     template = loader.get_template('timeline/releases.html')
     context = {
         'app_list': app_list,
@@ -157,7 +169,7 @@ def releases(request):
         'major_releases_month': major_releases_month,
         'minor_releases_month': minor_releases_month,
         'patch_releases_month': patch_releases_month,
-        'month': month,
+        'release_month': release_month_str,
         'releases_year': releases_year,
     }
     return HttpResponse(template.render(context, request))

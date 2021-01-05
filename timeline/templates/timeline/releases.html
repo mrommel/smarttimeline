@@ -1,5 +1,6 @@
 {% extends "generic.html" %}
 
+{% load i18n %}
 {% load static %}
 
 {% block styles %} 
@@ -30,7 +31,7 @@
       				
       					<div class="card">
       						<div class="card-header">
-                				<h4 class="card-title">Timeline</h4>
+                				<h4 class="card-title">{% trans "Timeline" %}</h4>
               				</div>
               				
               				<div class="card-body">
@@ -42,18 +43,18 @@
 									</div>
 									<div class="thirdcol">
 										<br /><br />
-										<span class="normal">schon</span>
+										<span class="normal">{% trans "already" %}</span>
 										{% if major_releases_month > 0 %}
 											<span class="highlight">{{ major_releases_month }}</span>
-											<span class="normal">major ,</span>
+											<span class="normal">{% trans "major" %} ,</span>
 										{% endif %}
 										<span class="highlight">{{ minor_releases_month }}</span>
-										<span class="normal">minor und</span>
+										<span class="normal">{% trans "minor" %} {% trans "and" %}</span>
 										<span class="highlight">{{ patch_releases_month }}</span>
-										<span class="normal">patch App Releases</span>
-										<span class="normal">im <b>{{ month }}</b> und</span>
+										<span class="normal">{% trans "patch" %} {% trans "App Releases" %}</span>
+										<span class="normal">{% trans "in" %} <b>{{ release_month }}</b> {% trans "and" %}</span>
 										<span class="highlight">{{ releases_year }}</span>
-										<span class="normal">dieses Jahr</span>
+										<span class="normal">{% trans "this year" %}</span>
 									</div>
 								</section>
 
@@ -63,14 +64,18 @@
 
 									{% if release.first %}
 									</section>
-									<section class="month">{{ release.pub_date|date:"M" }} {{ release.pub_date|date:"Y" }}</section>
+									<section class="month">
+										<a href="/timeline/releases/{{ release.pub_date.month }}/{{ release.pub_date.year }}">
+											{{ release.pub_date|date:"M" }} {{ release.pub_date|date:"Y" }}
+										</a>
+									</section>
 									<section class="timeline">
 									{% endif %}
 
 									<article>
 										<div class="inner">
 		  									<span class="date">
-												<span class="day">{{ release.pub_date|date:"d" }}<!--<sup>th</sup>--></span>
+												<span class="day">{{ release.pub_date|date:"d" }}</span>
 		  									</span>
 		  									<h2 class="{{ release.app.mobile_os|lower }}">
 												<img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;
@@ -95,7 +100,7 @@
 
       					<div class="card card-timeline">
       						<div class="card-header">
-                				<h4 class="card-title">Timeline</h4>
+                				<h4 class="card-title">{% trans "Timeline" %}</h4>
               				</div>
 
               				<div class="card-body">
@@ -104,28 +109,28 @@
 							  		<table class="table tablesorter " id="">
 										<thead class=" text-primary">
 								  			<tr>
-												<th>App</th>
-												<th>Version</th>
-												<th>Changelog</th>
-												<th>Release date</th>
+												<th>{% trans "App" %}</th>
+												<th>{% trans "Version" %}</th>
+												<th>{% trans "Changelog" %}</th>
+												<th>{% trans "Release date" %}</th>
 									  			<th></th>
 								  			</tr>
 										</thead>
 										<tbody>
 
-										{% for release in release_list %}
-								  			<tr>
-												<td><img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;&nbsp;<a href="/timeline/app/{{ release.app.id }}/">{{ release.app.name }}</a></td>
-												<td>{{ release.name }}</td>
-												<td>{{ release.changelog|linebreaks }}</td>
-												<td>{{ release.pub_date }}</td>
-									  			<td class="td-actions text-right">
-                          							<button type="button" rel="tooltip" onclick="location.href='/timeline/release_input?id={{ release.id }}';" title="" class="btn btn-link" data-original-title="Edit Task">
-                            							<i class="tim-icons icon-pencil"></i>
-                          							</button>
-                        						</td>
-								  			</tr>
-									{% endfor %}
+											{% for release in release_list %}
+												<tr>
+													<td><img src="/static/timeline/img/apps/{{ release.app.name }}.png" class="app_icon" />&nbsp;&nbsp;<a href="/timeline/app/{{ release.app.id }}/">{{ release.app.name }}</a></td>
+													<td>{{ release.name }}</td>
+													<td>{{ release.changelog|linebreaks }}</td>
+													<td>{{ release.pub_date }}</td>
+													<td class="td-actions text-right">
+														<button type="button" rel="tooltip" onclick="location.href='/timeline/release_input?id={{ release.id }}';" title="" class="btn btn-link" data-original-title="Edit Task">
+															<i class="tim-icons icon-pencil"></i>
+														</button>
+													</td>
+												</tr>
+											{% endfor %}
 										</tbody>
 							  		</table>
 								</div>
