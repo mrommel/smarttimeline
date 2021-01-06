@@ -225,10 +225,26 @@ section.timeline div.inner h2.and:after {
 	background: #61D836;
 }
 
+section.timeline div.inner h2.and.release_Pat {
+	background: #97d681;
+}
+
+section.timeline div.inner h2.and.release_Pat:after {
+	background: #97d681;
+}
+
 section.timeline div.inner h2.ios {
 	background: #007B76;
 }
 
 section.timeline div.inner h2.ios:after {
 	background: #007B76;
+}
+
+section.timeline div.inner h2.release_Pat.ios {
+	background: #417a78;
+}
+
+section.timeline div.inner h2.ios.release_Pat:after {
+	background: #417a78;
 }

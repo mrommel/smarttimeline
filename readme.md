@@ -9,7 +9,7 @@ project to
 
 cd ~/Prog/SmartTimeline/
 source ~/.virtualenvs/smarttimeline/bin/activate
-python3 manage.py runserver
+python3 manage.py runserver 8000
 deactivate
 
 => http://127.0.0.1:8000/timeline/dashboard
