@@ -1,0 +1,20 @@
+#!/bin/bash
+
+NAME="smarttimeline"                              # Name of the application
+DJANGODIR=~/Prog/SmartTimeline/      			  # Django project directory
+USER=michaelrommel                                # the user to run as
+GROUP=localaccounts                               # the group to run as
+NUM_WORKERS=5                                     # how many worker processes should Gunicorn spawn
+DJANGO_SETTINGS_MODULE=smarttimeline              # which settings file should Django use
+DJANGO_WSGI_MODULE=wsgi                       	  # WSGI module name
+PORT=8000
+
+echo "Starting $NAME as `whoami`"
+
+# Activate the virtual environment
+cd $DJANGODIR
+source ./bin/activate
+
+# Start your Django Unicorn
+# Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
+exec gunicorn ${DJANGO_SETTINGS_MODULE}.${DJANGO_WSGI_MODULE} --name $NAME --bind 0.0.0.0:${PORT} --workers $NUM_WORKERS --log-level=info --log-file=-
