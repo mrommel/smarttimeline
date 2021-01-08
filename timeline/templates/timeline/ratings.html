@@ -32,6 +32,9 @@
 		.negative {
 			color: red;
 		}
+		.normal {
+			color: yellow;
+		}
 		.star-ratings {
 		  	unicode-bidi: bidi-override;
 		  	color: #ccc;
@@ -118,7 +121,7 @@
 									<td>
 										{{ app.current_rating.rating }}
 										<div class="star-ratings">
-  											<div class="fill-ratings" style="width: {{ app.current_rating.rating_percent }}%;">
+  											<div class="fill-ratings" style="width: {{ app.current_rating.rating_percent }}px;">
     											<span>★★★★★</span>
   											</div>
   											<div class="empty-ratings">
@@ -126,9 +129,9 @@
   											</div>
 										</div>
 									</td>
-									<td>{{ app.last_month_rating.rating }} (<span class="{% if app.last_month_rating_delta < 0 %}negative{% elif app.last_month_rating_delta == 0.0 %}normal{% else %}positive{% endif %}">{{ app.last_month_rating_delta }}</span>)</td>
-									<td>{{ app.six_month_ago_rating.rating }} (<span class="{% if app.six_month_ago_rating_delta < 0 %}negative{% elif app.six_month_ago_rating_delta == 0.0 %}normal{% else %}positive{% endif %}">{{ app.six_month_ago_rating_delta }}</span>)</td>
-									<td>{{ app.twelve_month_ago_rating.rating }} (<span class="{% if app.twelve_month_ago_rating_delta < 0 %}negative{% elif app.twelve_month_ago_rating_delta == 0.0 %}normal{% else %}positive{% endif %}">{{ app.twelve_month_ago_rating_delta }}</span>)</td>
+									<td>{{ app.last_month_rating.rating }} (<span class="{% if app.last_month_rating_delta < -0.05 %}negative{% elif app.last_month_rating_delta > 0.05 %}positive{% else %}normal{% endif %}">{{ app.last_month_rating_delta }}</span>)</td>
+									<td>{{ app.six_month_ago_rating.rating }} (<span class="{% if app.six_month_ago_rating_delta < -0.05 %}negative{% elif app.six_month_ago_rating_delta > 0.05 %}positive{% else %}normal{% endif %}">{{ app.six_month_ago_rating_delta }}</span>)</td>
+									<td>{{ app.twelve_month_ago_rating.rating }} (<span class="{% if app.twelve_month_ago_rating_delta < -0.05 %}negative{% elif app.twelve_month_ago_rating_delta > 0.05 %}positive{% else %}normal{% endif %}">{{ app.twelve_month_ago_rating_delta }}</span>)</td>
 								</tr>
 							{% endfor %}
 							</tbody>

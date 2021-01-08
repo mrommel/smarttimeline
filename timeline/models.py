@@ -111,7 +111,7 @@ class Rating(models.Model):
     pub_date = models.DateField('date published')
 
     def rating_percent(self):
-        return self.rating * decimal.Decimal(20.0)
+        return str(int(self.rating * 20))
 
     # ...
     def __str__(self):
