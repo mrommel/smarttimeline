@@ -7,36 +7,41 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-05 15:32+0000\n"
-"PO-Revision-Date: 2021-01-05 16:37+0100\n"
+"POT-Creation-Date: 2021-01-28 15:27+0000\n"
+"PO-Revision-Date: 2021-01-28 16:28+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Last-Translator: \n"
-"Language-Team: \n"
 "X-Generator: Poedit 2.4.2\n"
 
-#: models.py:12
+#: models.py:11
 msgid "Android"
 msgstr "Android"
 
-#: models.py:13
+#: models.py:12
 msgid "iOS"
 msgstr "iOS"
 
-#: models.py:17
+#: models.py:16
 msgid "Major"
 msgstr "Major"
 
-#: models.py:18
+#: models.py:17
 msgid "Minor"
 msgstr "Minor"
 
-#: models.py:19
+#: models.py:18
 msgid "Patch"
 msgstr "Patch"
+
+#: models.py:117
+#, python-format
+msgid "Rating of %s at %s"
+msgstr "Bewertung von %s am %s"
 
 #: templates/generic.html:53 templates/generic.html:61
 msgid "Dashboard"
@@ -74,12 +79,12 @@ msgstr "Fahrplan"
 msgid "Admin"
 msgstr "Admin"
 
-#: templates/timeline/app.html:33 templates/timeline/ratings.html:70
-#: templates/timeline/ratings.html:94
+#: templates/timeline/app.html:33 templates/timeline/ratings.html:74
+#: templates/timeline/ratings.html:99
 msgid "Ratings"
 msgstr "Bewertungen"
 
-#: templates/timeline/app.html:39 templates/timeline/ratings.html:76
+#: templates/timeline/app.html:39 templates/timeline/ratings.html:80
 msgid "Toggle Markers"
 msgstr "Umschalten"
 
@@ -99,39 +104,43 @@ msgstr "Veränderungen"
 msgid "Ratings of"
 msgstr "Bewertungen von"
 
-#: templates/timeline/ratings.html:102 templates/timeline/releases.html:112
+#: templates/timeline/ratings.html:81
+msgid "Export SVG"
+msgstr "SVG exportieren"
+
+#: templates/timeline/ratings.html:107 templates/timeline/releases.html:112
 msgid "App"
 msgstr "App"
 
-#: templates/timeline/ratings.html:103
+#: templates/timeline/ratings.html:108
 msgid "Current version"
 msgstr "Aktuelle Version"
 
-#: templates/timeline/ratings.html:104
+#: templates/timeline/ratings.html:109
 msgid "Current rating"
 msgstr "Aktuelle Bewertung"
 
-#: templates/timeline/ratings.html:105
+#: templates/timeline/ratings.html:110
 msgid "1 Month ago (Delta)"
 msgstr "Vor 1 Monat (Delta)"
 
-#: templates/timeline/ratings.html:106
+#: templates/timeline/ratings.html:111
 msgid "6 Month ago (Delta)"
 msgstr "Vor 6 Monaten (Delta)"
 
-#: templates/timeline/ratings.html:107
+#: templates/timeline/ratings.html:112
 msgid "12 Month ago (Delta)"
 msgstr "Vor 12 Monaten (Delta)"
 
-#: templates/timeline/ratings.html:178
+#: templates/timeline/ratings.html:191
 msgid "Ratings of FRITZ!Apps"
 msgstr "Bewertungen der FRITZ!Apps"
 
-#: templates/timeline/release_form.html:28
+#: templates/timeline/release_form.html:29
 msgid "Add Release"
 msgstr "Release hinzufügen"
 
-#: templates/timeline/release_form.html:86
+#: templates/timeline/release_form.html:87
 msgid "Save"
 msgstr "Speichern"
 
@@ -165,11 +174,11 @@ msgstr "Appveröffentlichung"
 
 #: templates/timeline/releases.html:55
 msgid "in"
-msgstr "in"
+msgstr "im"
 
 #: templates/timeline/releases.html:57
 msgid "this year"
-msgstr "Diesem Jahr"
+msgstr "in diesem Jahr"
 
 #: templates/timeline/releases.html:115
 msgid "Release date"

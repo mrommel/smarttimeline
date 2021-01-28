@@ -1,9 +1,11 @@
+import locale
 from datetime import date, timezone, datetime
 
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template import loader
+from django.utils import translation
 
 from cms.models import Content
 from .form import AddRatingsForm, AddVersionModelForm
@@ -159,6 +161,7 @@ def releases(request, release_month, release_year):
         last_month = release_item.pub_date.month
 
     my_date = datetime(release_year, release_month, 1, 4, tzinfo=timezone.utc)
+    locale.setlocale(locale.LC_TIME, translation.to_locale(translation.get_language()))
     release_month_str = my_date.strftime("%B")
 
     template = loader.get_template('timeline/releases.html')
@@ -263,7 +266,7 @@ def ratings(request):
 
             marker_text = '%s#%s' % (version.app.name_without_os(), version.name)
             chart_data.markers.append(ChartMarker(version.app.name, timeline_index, marker_text))
-        except StopIteration as e:
+        except StopIteration:
             print("cant add %s" % version)
 
     context = {
@@ -433,8 +436,8 @@ def add_ratings(request):
         result_smart_home_android = app('de.avm.android.smarthome', lang='en', country='us')
         smart_home_android = "%.2f" % result_smart_home_android["score"]
 
-        form_data = {'date': date_val, 'myf_android': myf_android, 'fon_android': fon_android, 'wlan_android': wlan_android,
-                     'tv_android': tv_android, 'smart_home_android': smart_home_android}
+        form_data = {'date': date_val, 'myf_android': myf_android, 'fon_android': fon_android,
+                     'wlan_android': wlan_android, 'tv_android': tv_android, 'smart_home_android': smart_home_android}
 
         form = AddRatingsForm(form_data)
 

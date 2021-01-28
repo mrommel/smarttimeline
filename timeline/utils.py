@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import datetime
 
 
 def month_delta(date, delta):
@@ -9,7 +9,8 @@ def month_delta(date, delta):
     :return: date changed by month
     """
     m, y = (date.month + delta) % 12, date.year + (date.month + delta - 1) // 12
-    if not m: m = 12
+    if not m:
+        m = 12
     d = min(date.day, [31,
                        29 if y % 4 == 0 and not y % 400 == 0 else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m - 1])
 

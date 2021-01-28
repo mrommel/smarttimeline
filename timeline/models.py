@@ -1,9 +1,8 @@
-import decimal
+from datetime import date
 
+from colorfield.fields import ColorField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from colorfield.fields import ColorField
-from datetime import date
 
 from timeline.utils import month_delta
 
@@ -115,4 +114,4 @@ class Rating(models.Model):
 
     # ...
     def __str__(self):
-        return 'Bewertung %s vom %s' % (self.app.name, self.pub_date)
+        return _('Rating of %s at %s') % (self.app.name, self.pub_date)
